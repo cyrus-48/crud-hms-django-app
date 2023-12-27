@@ -1,0 +1,50 @@
+
+ {% load  static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> hms authentication</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}"> 
+    <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css' %}"> 
+   <link rel="shortcut icon" type="image/icon" href="{% static 'assets/logo/favicon.png' %}"/> 
+    <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}"> 
+<link rel="stylesheet" href="{% static 'assets/css/linearicons.css' %}"> 
+<link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+
+<!--flaticon.css-->
+<link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+
+<!--slick.css-->
+<link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/slick-theme.css' %}">
+
+<!--bootstrap.min.css-->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+<!-- bootsnav -->
+<link rel="stylesheet" href="{% static 'assets/css/bootsnav.css' %}" >	
+
+<!--style.css-->
+<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'assets/auth/css/style.css' %}">
+</head>
+<body>
+
+    <div class="main">  
+        {% block content %}
+            
+        {% endblock content %} 
+       
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'assets/auth/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/auth/js/main.js' %}"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+</html>
