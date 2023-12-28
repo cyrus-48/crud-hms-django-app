@@ -1,0 +1,16 @@
+<!-- Your main template -->
+{% extends 'public/base.html' %}
+{% load static %} 
+
+{% block content %}
+    <section id="explore" class="explore">
+        <div class="container-fluid">
+            <div class="section-header">
+                <h2>Explore All Categories</h2> 
+            </div><!--/.section-header-->
+            <div class="explore-content">
+                {% include 'public/category_list.html' %}
+            </div>
+        </div><!--/.container--> 
+    </section><!--/.explore-->
+{% endblock content %}

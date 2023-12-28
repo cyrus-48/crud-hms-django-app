@@ -1,0 +1,262 @@
+
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+
+    <head>
+        <!-- meta data -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+        <!--font-family-->
+		<link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+        
+        <!-- title of site -->
+        <title></title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css" rel="stylesheet">
+
+        <!-- For favicon png -->
+		<link rel="shortcut icon" type="image/icon" href="{% static 'assets/auth/images/logo.png' %}"/>
+       
+        <!--font-awesome.min.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/font-awesome.min.css' %}">
+
+        <!--linear icon css-->
+		<link rel="stylesheet" href="{% static 'assets/css/linearicons.css' %}">
+
+		<!--animate.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
+
+		<!--flaticon.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+
+		<!--slick.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+		<link rel="stylesheet" href="{% static 'assets/css/slick-theme.css' %}">
+		
+        <!--bootstrap.min.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+		
+		<!-- bootsnav -->
+		<link rel="stylesheet" href="{% static 'assets/css/bootsnav.css' %}" >	
+        
+        <!--style.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        
+        <!--responsive.css-->
+        <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}"> 
+    </head>
+	
+	<body> 
+		
+		<!--header-top start -->
+		<header id="header-top" class="header-top">
+			<ul>
+				<li>
+					<div class="header-top-left">
+						<ul> 
+							<li class="select-opt">
+								 <p class="text-danger">Find the best reservation !!!</p>
+							</li>
+						</ul>
+					</div>
+				</li>
+				<li class="head-responsive-right pull-right">
+                    <div class="header-top-right">
+                        {% if  user.is_authenticated %}
+						<ul>
+							<li class="header-top-contact">
+								 <a href="">Welcome , {{user.first_name }} {{user.last_name}} </a>
+							</li> 
+						</ul> 
+							{% else %}
+                            <ul>
+                                <li class="header-top-contact">
+                                    <a href="{% url 'accounts:login' %}">Sign In</a>
+                                </li>
+                                <li class="header-top-contact">
+                                    <a href="{% url 'accounts:register' %}">Register</a>
+                                </li>
+                            </ul> 
+						{% endif%}
+                    </div>
+                </li>
+                
+			</ul>
+					
+		</header><!--/.header-top-->
+		<!--header-top end --> 
+		<!-- top-area Start -->
+		<section class="top-area">
+			<div class="header-area">
+				<!-- Start Navigation -->
+			    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style ="width:100%;" data-bs-minus-value-desktop="70" data-bs-minus-value-mobile="55" data-bs-speed="1000">
+					<div class="container">
+						<!-- Start Header Navigation -->
+						<div class="navbar-brand">
+							<a href="index.html">Hotel<span>reservation</span></a>
+						</div>
+						<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+							<span class="navbar-toggler-icon"></span>
+						</button>
+						<!-- End Header Navigation -->
+				
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
+							<ul class="navbar-nav ms-auto" data-bs-in="fadeInDown" data-bs-out="fadeOutUp">
+								<li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+								<li class="nav-item"><a class="nav-link" href="#works">Categories </a></li>
+								<li class="nav-item"><a class="nav-link" href="#explore">About</a></li>
+								<li class="nav-item"><a class="nav-link" href="#reviews">Reviews</a></li> 
+								<li class="nav-item"><a class="nav-link" href="#contact">My Account</a></li>
+
+								<li class="nav-item">
+									<a class="nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="bi bi-person-circle"></i> <!-- Bootstrap Icons -->
+									</a>
+									<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+										<li><a class="dropdown-item" href="#">Profile</a></li>
+										<li><a class="dropdown-item" href="#">Logout</a></li>
+									</ul>
+								</li>
+							</ul><!--/.nav -->
+						</div><!-- /.navbar-collapse -->
+					</div><!--/.container-->
+				</nav><!--/nav-->
+			    <!-- End Navigation -->
+			</div><!--/.header-area-->
+		    <div class="clearfix"></div>
+
+		</section><!-- /.top-area-->
+		<!-- top-area End -->
+        {% block content%}
+
+         {% endblock content%} 
+		<!-- statistics strat -->
+		<section id="statistics"  class="statistics">
+			<div class="container">
+				<div class="statistics-counter"> 
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{categories_count}} </div> <span>K+</span>
+							</div><!--/.statistics-content-->
+							<h3>categories</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{ rooms_count}}</div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>listing rooms</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{visitors_count}}</div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>visitors</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{reviews_count}} </div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>Reviews </h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+				</div><!--/.statistics-counter-->	
+			</div><!--/.container-->
+
+		</section><!--/.counter-->	
+		<!-- statistics end -->
+ 		<!--footer start-->
+		<footer id="footer"  class="footer">
+			<div class="container">
+				<div class="footer-menu">
+		           	<div class="row">
+			           	<div class="col-sm-3">
+			           		 <div class="navbar-header">
+				                <a class="navbar-brand" href="index.html">list<span>race</span></a>
+				            </div><!--/.navbar-header-->
+			           	</div>
+			           	<div class="col-sm-9">
+			           		<ul class="footer-menu-item">
+			                    <li class="scroll"><a href="#works">how it works</a></li>
+			                    <li class="scroll"><a href="#explore">explore</a></li>
+			                    <li class="scroll"><a href="#reviews">review</a></li>
+			                    <li class="scroll"><a href="#blog">blog</a></li>
+			                    <li class="scroll"><a href="#contact">contact</a></li>
+			                    <li class=" scroll"><a href="#contact">my account</a></li>
+			                </ul><!--/.nav -->
+			           	</div>
+		           </div>
+				</div>
+				<div class="hm-footer-copyright">
+					<div class="row">
+						<div class="col-sm-5">
+							<p>
+								&copy;copyright. designed and developed by <a href="https://www.themesine.com/">themesine</a>
+							</p><!--/p-->
+						</div>
+						<div class="col-sm-7">
+							<div class="footer-social">
+								<span><i class="fa fa-phone"> +1  (222) 777 8888</i></span>
+								<a href="#"><i class="fa fa-facebook"></i></a>	
+								<a href="#"><i class="fa fa-twitter"></i></a>
+								<a href="#"><i class="fa fa-linkedin"></i></a>
+								<a href="#"><i class="fa fa-google-plus"></i></a>
+							</div>
+						</div>
+					</div>
+					
+				</div><!--/.hm-footer-copyright-->
+			</div><!--/.container-->
+
+			<div id="scroll-Top">
+				<div class="return-to-top">
+					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
+				</div>
+				
+			</div><!--/.scroll-Top-->
+			
+        </footer><!--/.footer-->
+		<!--footer end-->
+		
+		<!-- Include all js compiled plugins (below), or include individual files as needed -->
+
+		<script src="{% static 'assets/js/jquery.js' %}"></script>
+        
+        <!--modernizr.min.js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+		
+		<!--bootstrap.min.js-->
+        <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+		
+		<!-- bootsnav js -->
+		<script src="{% static 'assets/js/bootsnav.js' %}"></script>
+
+        <!--feather.min.js-->
+        <script  src="{% static 'assets/js/feather.min.js' %}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <!-- counter js -->
+		<script src="{% static 'assets/js/jquery.counterup.min.js' %}"></script>
+		<script src="{% static 'assets/js/waypoints.min.js' %}"></script>
+
+        <!--slick.min.js-->
+        <script src="{% static 'assets/js/slick.min.js' %}"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+		     
+        <!--Custom JS-->
+        <script src="{% static 'assets/js/custom.js' %}"></script>
+        
+    </body>
+	
+</html>

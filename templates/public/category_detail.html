@@ -1,0 +1,89 @@
+ {% extends 'public/base.html' %}
+ {% load static %} 
+ {% block content %}
+		<!--explore start -->
+		<section id="explore" class="explore">
+			<div class="container-fluid">
+				<div class="section-header">
+					<h2>{{ category.name }} Suite Rooms</h2> 
+				</div><!--/.section-header-->
+				<div class="row explore-content">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="single-explore-item">
+                            <div class="single-explore-img">
+                                <img src="{{ category.image.url}}" alt="explore image">
+                                 
+                            </div>
+                            <div class="single-explore-txt bg-theme-1">
+                                <h2><a href="#">{{ category.name }}</a></h2>
+                                <p class="explore-rating-price">
+                                    <span class="explore-rating">5.0</span>
+                                    <a href="#"> 10 ratings</a> 
+                                    <span class="explore-price-box"> 
+                                        <span class="explore-price">Ksh 5000</span>
+                                    </span>
+                                     <a href="#">Available Rooms : <span class="text-warning ">{{available_rooms}}</span></a>
+                                </p> 
+                                <div class="list-group">
+                                    <div  class="list-group-item list-group-item-action active" aria-current="true">
+                                      <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1 text-white">Amenities</h5> 
+                                      </div> 
+                                    </div>
+                                    {% for d in description%}
+									<div   class="list-group-item list-group-item-action">
+										<div class="d-flex w-100 justify-content-between">
+										  <p class="mb-1">{{d}}</p>
+										  <small class="text-body-secondary">ammenity</small>
+										</div> 
+									  </div> 
+									{% endfor %}
+                                  </div>
+                                <div class="explore-open-close-part">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6">
+                        <div class="single-explore-item"> 
+                            <div class="single-explore-txt bg-theme-1">
+                                <h2><a href="#">Book {{category.name }} Suite Room</a></h2> 
+                                <div class="explore-person">
+                                     <!-- Booking Form -->
+									{%  if available_rooms > 0%}
+									<form method="post" action="">
+										{% csrf_token %}
+										<div class="mb-3">
+											<label for="check-in-date" class="form-label">Check-In Date:</label>
+											<input type="date" class="form-control" id="check-in-date" name="check_in_date" required>
+										</div>
+										<div class="mb-3">
+											<label for="check-out-date" class="form-label">Check-Out Date:</label>
+											<input type="date" class="form-control" id="check-out-date" name="check_out_date" required>
+										</div>
+										<div class="mb-3">
+											<label for="guests" class="form-label">Number of Guests:</label>
+											<input type="number" class="form-control" id="guests" name="number_of_guests" required>
+										</div>
+										<button type="submit" class="btn btn-primary">Book Now</button>
+									</form>
+									{% else %}
+										<p class="text-danger">No rooms available ,  Check later or choose another category</p>
+									{% endif %}
+                                </div>
+                                <div class="explore-open-close-part">
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					 
+				</div>
+			</div><!--/.container-->
+
+		</section><!--/.explore-->
+		<!--explore end --> 
+{% endblock content %}
+
+		 

@@ -7,7 +7,8 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
-                        <form method="POST" class="register-form" id="register-form">
+                        <form method="POST" class="register-form" id="register-form" action="{% url 'accounts:register' %}">
+                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
                                 <input type="text" name="fname" id="name" placeholder="Your First Name "/>
@@ -17,25 +18,33 @@
                                 <input type="text" name="lname" id="name" placeholder="Your Second Name"/>
                             </div>
                             <div class="form-group">
+                                <label for="gender"><i class="zmdi zmdi-local-wc material-icons-name"></i></label>
+                                <input type="text" name="gender" id="name" placeholder="Your Gender"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="address"><i class="zmdi zmdi-pin material-icons-name"></i></label>
+                                <input type="text" name="address" id="name" placeholder="Your address"/>
+                            </div>
+                            <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
                                 <input type="email" name="email" id="email" placeholder="Your Email"/>
                             </div>
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="Password"/>
+                                <input type="password" name="password" id="pass" placeholder="Password"/>
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
-                            </div> 
+                                <input type="password" name="confirm_password" id="re_pass" placeholder="Repeat your password"/>
+                            </div>  
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="btn btn-primary" value="Register"/>
                             </div>
                         </form>
                     </div>
                     <div class="signup-image">
-                        <figure><img src="assets/auth/images/logo.png" alt="sing up image"></figure>
-                        <a href="#" class="link text-primary">I am already member</a>
+                        <figure><img src="{% static 'assets/auth/images/logo.png' %}" alt="sing up image"></figure>
+                        <a href="{% url 'accounts:login' %}" class="link text-primary">I am already member</a>
                     </div>
                 </div>
             </div>

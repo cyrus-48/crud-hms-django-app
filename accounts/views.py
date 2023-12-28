@@ -28,7 +28,7 @@ def register_view(request):
         user.save()
         
         login(request, user)
-        return HttpResponseRedirect(reverse(''))
+        return HttpResponseRedirect(reverse('accounts:login'))
     return render(request, 'auth/registration.html') 
         
     
@@ -41,12 +41,12 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse(''))
+            return HttpResponseRedirect(reverse('hotel:home'))
         else:
             return render(request, 'auth/login.html', {'message': 'Invalid Credentials'})
-    return render(request, '')
+    return render(request, 'auth/login.html')
 
-@login_required(login_url='login')
+@login_required(login_url='accounts:login')
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('login'))
+    return HttpResponseRedirect(reverse('accounts:login'))

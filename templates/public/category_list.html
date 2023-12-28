@@ -1,0 +1,46 @@
+<!-- room_categories_list.html -->
+<div class="row">
+    {% for category in room_categories %}
+        <div class="col-md-3 col-sm-6">
+            <div class="single-explore-item">
+                <div class="single-explore-img">
+                    <img src="{{ category.image.url }}" alt="explore image">
+                </div>
+                <div class="single-explore-txt bg-theme-1">
+                    <h2><a href="#">{{ category.name }} suite</a></h2>
+                    <p class="explore-rating-price">
+                        <span class="explore-rating">5.0</span>
+                        <a href="#">10 ratings</a> 
+                        <span class="explore-price-box"> 
+                            <span class="explore-price">Ksh {{ category.cost }}</span>
+                        </span>
+                        <a href="#">Available Rooms: <span class="text-warning">{{ category.rooms }}</span></a>
+                    </p>
+                    <div class="explore-person">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="explore-person-img">
+                                    <p class="text-primary">
+                                        Amenities 
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-10">
+                                <p>
+                                    {{ category.description | truncatewords:10 }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="explore-open-close-part">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <a href="{% url 'hotel:category' category.id %}" class="btn btn-primary">View More</a>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    {% endfor %}
+</div>
