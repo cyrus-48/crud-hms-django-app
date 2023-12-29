@@ -70,5 +70,44 @@
 						{% include 'public/category_list.html' %} 
 				</div>
 			</div><!--/.container--> 
-		</section><!--/.explore--> 
+		</section><!--/.explore-->
+		<section id="statistics"  class="statistics">
+			<div class="container">
+				<div class="statistics-counter"> 
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{categories_count}} </div> <span>K+</span>
+							</div><!--/.statistics-content-->
+							<h3>categories</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{ rooms_count}}</div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>listing rooms</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{visitors_count}}</div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>visitors</h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+					<div class="col-md-3 col-sm-6">
+						<div class="single-ststistics-box">
+							<div class="statistics-content">
+								<div class="counter">{{reviews_count}} </div> <span>k+</span>
+							</div><!--/.statistics-content-->
+							<h3>Reviews </h3>
+						</div><!--/.single-ststistics-box-->
+					</div><!--/.col-->
+				</div><!--/.statistics-counter-->	
+			</div><!--/.container-->
+
+		</section><!--/.counter-->	
 		{% endblock content%}

@@ -1,0 +1,109 @@
+<!-- my_booking_detail.html -->
+
+{% extends 'public/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            {% include 'public/profile_sidebar.html' %}
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <i class="bi bi-bookmark text-primary"></i> Booking Details
+                        </h2>
+            
+                        {% if booking %}
+                            <div class="mb-3">
+                                <i class="bi bi-hash text-primary"></i>
+                                <strong class="text-primary">Booking ID:</strong> {{ booking.id }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-door-open text-primary"></i>
+                                <strong class="text-primary">Room Category:</strong> {{ booking.category.name }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-calendar text-primary"></i>
+                                <strong class="text-primary">Check-In Date:</strong> {{ booking.check_in }}
+                            </div>
+                            <div class="mb-3">
+                                <i class="bi bi-calendar-check text-primary"></i>
+                                <strong class="text-primary">Check-Out Date:</strong> {{ booking.check_out }}
+                            </div>
+            
+                            <!-- Reviews Section -->
+                            <h3 class="card-title mt-4">
+                                <i class="bi bi-star text-success"></i>Recent Reviews
+                            </h3>
+                            {% if reviews %} 
+                            <div class="list-group">
+                                {% for review in reviews%}
+                                <div   class="list-group-item list-group-item-action  " aria-current="true">
+                                  <div class="d-flex w-100 justify-content-between">
+                                    <h5 class="mb-1">comment: {{review.comment}}</h5>
+                                    <small>{{review.added_on}}</small>
+                                  </div> 
+                                  <small>reviewed by: {{user.get_full_name}}</small>
+                                </div>
+                                 {% endfor %}
+                              </div>
+                                     
+                            {% else %}
+                                <p class="text-muted">
+                                    <i class="bi bi-info-circle"></i> No reviews yet.
+                                </p>
+                            {% endif %}
+            
+                            <!-- Add Review Form -->
+                            <h3 class="card-title mt-4">
+                                <i class="bi bi-pencil text-primary"></i> Add a Review
+                            </h3>
+                            <form method="post" action="{% url 'accounts:add_review' %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label for="booking_id" class="form-label">
+                                        <input type="hidden" id="booking_id" name="booking_id" value="{{ booking.id }}">
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="category_id" class="form-label">
+                                        <input type="hidden" id="category_id" name="category" value="{{ category_id }}">
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rating" class="form-label">
+                                        <i class="bi bi-star text-warning"></i> Rating:
+                                    </label>
+                                    <select class="form-control" id="rating" name="rating" required>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="comment" class="form-label">
+                                        <i class="bi bi-chat-dots text-primary"></i> Comment:
+                                    </label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check"></i> Submit Review
+                                </button>
+                            </form>
+                        {% else %}
+                            <p class="text-muted">
+                                <i class="bi bi-exclamation-circle"></i> Booking not found.
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

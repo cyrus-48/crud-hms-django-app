@@ -1,32 +1,4 @@
-/*==================================
-* Author        : "ThemeSine"
-* Template Name : Listrace  HTML Template
-* Version       : 1.0
-==================================== */
-
-/*==================================
-font-family: 'Roboto', sans-serif;
-==================================== */
-
-
-/*=========== TABLE OF CONTENTS ===========
-1.  General css (Reset code)
-2.  Header-top
-3.  Top-area
-4.  Welcome-hero
-5.  List-topics
-6.  Works  
-7.  Explore
-8.  Reviews
-9.  Counter
-10. Blog
-11. Subscribe
-12. Footer
-==========================================*/
-
-/*-------------------------------------
-		1.General css (Reset code)
---------------------------------------*/
+ 
 *{
     padding: 0;
     margin: 0;
@@ -58,13 +30,7 @@ a,a:hover,a:active,a:focus {
     font-weight: 500;
     text-transform: capitalize;
 }
-h1,h2,h3,h4,h5,h6 { 
-	margin: 0;
-	color:#343a3f;
-    font-size: 18px;
-    font-weight: 500;
-    text-transform: capitalize;
-}
+ 
 p {
 	margin: 0;
 	color:#767f86;
@@ -171,6 +137,18 @@ html,body{height: 100%;}
     text-decoration: uppercase    ;
 }
 
+.btn-custom{
+    background-color:#ff545a;
+    color: #000;
+    border-radius: 10px;
+
+}
+
+.btn-custom:hover{
+    background-color:#ff7a40;
+    color: #000;
+}
+
 
 /*-------------------------------------
         3. Top-area
@@ -182,21 +160,27 @@ nav.navbar.bootsnav {
 .wrap-sticky nav.navbar.bootsnav.sticked {background-color: #fff;box-shadow: 0 2px 5px rgba(0,0,0,.2);}
 
 /*.navbar-brand*/
-.navbar-header a.navbar-brand,.navbar-header a.navbar-brand:hover,.navbar-header a.navbar-brand:focus {
+.navbar-brand{
     display: inline-block;
     color: #1b1e20;
     font-size: 20px;
-    font-weight: 700;
-    padding: 34px 0px;
+    font-weight: 700; 
     text-transform:capitalize;
 }
-.navbar-header a.navbar-brand span{display: inline-block;color:#ff545a;text-transform:capitalize;}
+.navbar-brand a{
+    color: #1b1e20;
+    font-size: 20px;
+    font-weight: 700; 
+    text-transform:capitalize;
 
-.wrap-sticky nav.navbar.bootsnav.sticked .navbar-header a.navbar-brand,.wrap-sticky nav.navbar.bootsnav.sticked .navbar-header a.navbar-brand:hover,.wrap-sticky nav.navbar.bootsnav.sticked .navbar-header a.navbar-brand:focus {padding:30px 0px;}
+}
+.brand-span{display: inline-block;color:#ff545a;text-transform:capitalize;}
+
+ .navbar-brand:focus {padding:30px 0px;}
 /*.navbar-brand*/
 
 /*.nav li*/
-nav.navbar.bootsnav ul.nav > li > a {
+ .nav-link {
     color: #859098;
     font-size: 14px;
     font-weight: 500;
@@ -207,8 +191,9 @@ nav.navbar.bootsnav ul.nav > li > a {
     -o-transition: 0.3s linear; 
     transition: 0.3s linear;
 }
-nav.navbar.bootsnav ul.nav > li > a {padding:34px 21px;}
-nav.navbar.bootsnav ul.nav > li > a:hover,nav.navbar.bootsnav ul.nav > li > a:focus{color: #ff545a;}
+.nav-link:hover{color: #ff545a;}
+.nav-link {padding:34px 21px;}
+.nav-link:focus{color: #ff545a;}
 nav.navbar.bootsnav ul.nav > li.active>a {color: #ff545a;}
 
 nav.navbar.bootsnav ul.nav > li.dropdown > a.dropdown-toggle:after {
@@ -282,62 +267,7 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
     color: #fcfcfc;
     margin-top: 25px;
 }
-
-.welcome-hero-serch-box{margin-top: 78px;display: flex;}
-.welcome-hero-form {
-    display: flex;
-    background: #fff;
-    height: 70px;
-    border-radius: 3px;
-    width: 85%;
-}
-.single-welcome-hero-form {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 50%;
-    padding: 0 30px;
-}
-.single-welcome-hero-form:first-child{border-right: 1px solid #edeff1;}
-.single-welcome-hero-form input {
-    margin-left: 10px;
-    height: 70px;
-    width: 300px;
-    border: 0;
-    background: transparent;
-}
-.single-welcome-hero-form input[type="text"]{
-    font-size: 14px;
-    color: #859098;
-    text-transform: capitalize;
-    font-weight: 500;
-}
-.welcome-hero-form-icon {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: #252d32;
-}
-.welcome-hero-btn {
-    display:  flex;
-    justify-content:  center;
-    align-items:  center;
-    font-size:  14px;
-    color:  #fff;
-    width:  170px;
-    height:  70px;
-    background:  #ff545a;
-    text-transform:  capitalize;
-    margin-left:  30px;
-    border-radius: 3px;
-    -webkit-transition: 0.3s linear; 
-    -moz-transition: 0.3s linear; 
-    -ms-transition: 0.3s linear; 
-    -o-transition: 0.3s linear; 
-    transition: 0.3s linear;
-}
-.welcome-hero-btn:hover{/*background: #fd4043;*/background: #f43032;}
+ 
 
 .welcome-hero-btn svg {
     width:  14px;
@@ -445,7 +375,7 @@ nav.navbar.bootsnav .navbar-toggle i{color: #ff545a;}
         7. Explore
 --------------------------------------*/
 .explore{
-    padding:117px 0 95px;
+    padding:11px 0 80px;
     background: #f8fafb;
 }
 .explore-content{margin-top: 78px;}

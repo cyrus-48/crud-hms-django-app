@@ -95,6 +95,7 @@ def booking(request):
 
     else:
         return HttpResponse('Invalid request')
+
     
  
     

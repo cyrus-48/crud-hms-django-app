@@ -75,9 +75,7 @@ class Review(models.Model):
     ) 
     comment = models.TextField()
     rating = models.IntegerField(choices=RATINGS)
-    added_on = models.DateTimeField(auto_now_add=True)
-    updated_on = models.DateTimeField(auto_now=True)
-    
+    added_on = models.DateTimeField(auto_now_add=True)  
     def __str__(self):
         return self.booking.user.email
     

@@ -1,0 +1,19 @@
+<div class="col-md-3">
+    <div class="list-group border">
+        <div class="list-group-item list-group-item-action active">
+            <h2 class="text-white">My profile</h2>
+        </div>
+        <div class="mt-5">
+        <a href="{% url 'accounts:my_bookings' %}"><div  class="list-group-item list-group-item-action"> My bookings </div></a>
+        </div>
+        <div class="mt-5">
+        <a href=" {% url 'accounts:profile_details' %}"><div  class="list-group-item list-group-item-action">Profile Details </div></a>
+        </div>
+        <div class="mt-5">
+        <a href="{% url 'accounts:change_password' %}" ><div  class="list-group-item list-group-item-action">Change Password</div></a>
+        </div>
+        <div class="mt-5">
+        <a href="{% url 'accounts:edit_profile' %} "  > <div  class="list-group-item list-group-item-action">Edit Profile </div>++++++++++++</a>
+        </div>
+    </div>
+</div>

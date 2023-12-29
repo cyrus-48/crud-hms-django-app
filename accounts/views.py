@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import CustomUser
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect , HttpResponse
 from django.urls import reverse
 from django.views.generic import CreateView
 from hotel.models import *
@@ -85,7 +85,7 @@ def edit_profile(request):
         user.gender = gender
         user.save()
         
-        return render(request , 'public/profile.html' , {'message':'Profile Updated'})
+        return HttpResponseRedirect(reverse('accounts:profile'))
     else:
         return render(request , 'public/profile.html' , {'message':'Invalid Request'})
     
@@ -99,6 +99,48 @@ def my_booking(request):
     }
     return render(request , 'public/my_bookings.html' , context)
 
+@login_required(login_url='accounts:login')
+def booking_details(request , id):
+    try:
+        booking = Booking.objects.get(id=id)
+    except:
+        return HttpResponseRedirect(reverse('accounts:my_booking'))
+    category = booking.room.category
+    reviews = Review.objects.filter(category=category)[:7]
+    user = request.user
+    category_id  = category.id 
+    
+    context = {
+        'booking':booking,
+        'reviews':reviews,
+        'category_id':category_id,
+        
+    }
+    return render(request , 'public/my_booking_detail.html' , context)
+
+@login_required(login_url='accounts:login')
+def add_review(request):
+    if request.method == 'POST':
+        category_id =  request.POST.get('category')
+        user = request.user
+        comment = request.POST.get('comment')
+        rating = request.POST.get('rating')
+        booking_id =  request.POST.get('booking_id')
+        print(category_id)
+        
+        
+        try:
+            category = RoomCategory.objects.get(id=category_id)
+            print(category)
+            review = Review.objects.create(category=category , user=user , comment=comment , rating=rating)
+            review.save()
+            return HttpResponseRedirect(reverse('accounts:booking_details' , args=(booking_id,)))
+        except:
+            return HttpResponse('Category does not exist')
+        
+    else:
+        return HttpResponse('Invalid Request')
+         
 @login_required(login_url='accounts:login')
 def change_password_view(request):
     user  =  request.user
@@ -118,10 +160,12 @@ def change_password(request):
             if new_password == confirm_password:
                 user.set_password(new_password)
                 user.save()
-                return render(request , 'public/profile.html' , {'message':'Password Updated'})
+                return HttpResponseRedirect(reverse('accounts:profile'))
             else:
                 return render(request , 'public/change_password.html' , {'message':'Password Mismatch'})
         else:
             return render(request , 'public/change_password.html' , {'message':'Invalid Password'})
     else:
         return render(request , 'public/change_password.html' , {'message':'Invalid Request'})
+
+ 
