@@ -1,0 +1,57 @@
+<!-- my_bookings.html -->
+
+{% extends 'public/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container m-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a href="{% url 'accounts:my_bookings' %}" class="list-group-item list-group-item-action">My Bookings</a>
+                    <a href=" {% url 'accounts:profile_details' %}" class="list-group-item list-group-item-action">Profile Details</a>
+                    <a href="{% url 'accounts:change_password' %}" class="list-group-item list-group-item-action">Change Password</a>
+                    <a href="{% url 'accounts:edit_profile' %} " class="list-group-item list-group-item-action active">Edit Profile</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <h2>My Bookings</h2>
+            
+                {% if bookings %}
+                    <table class="table responsive">
+                        <thead>
+                            <tr>
+                                <th scope="col">Booking ID</th>
+                                <th scope="col">Check-In</th>
+                                <th scope="col">Check-Out</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                    <th scope="row">{{ booking.id }}</th>
+                                    <td>{{ booking.check_in }}</td>
+                                    <td>{{ booking.check_out }}</td>
+                                    <td>
+                                        {% if booking.is_complete %}
+                                            <span class="badge bg-success">Complete</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Active</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No bookings found.</p>
+                {% endif %}
+            </div>
+            
+        </div>
+    </div>
+{% endblock %}

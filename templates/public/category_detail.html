@@ -52,19 +52,27 @@
                                 <div class="explore-person">
                                      <!-- Booking Form -->
 									{%  if available_rooms > 0%}
-									<form method="post" action="">
+									<form method="post" action="{% url 'hotel:book' %}">
 										{% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="room-number" class="form-label">Room Number:</label>
+                                            <select class="form-control" id="room-number" name="room" required>
+                                                {% for room in possible_rooms_for_category %}
+                                                    <option value="{{ room.name }}">{{ room.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
 										<div class="mb-3">
 											<label for="check-in-date" class="form-label">Check-In Date:</label>
-											<input type="date" class="form-control" id="check-in-date" name="check_in_date" required>
+											<input type="datetime-local" class="form-control" id="check-in-date" name="check_in" required>
 										</div>
 										<div class="mb-3">
 											<label for="check-out-date" class="form-label">Check-Out Date:</label>
-											<input type="date" class="form-control" id="check-out-date" name="check_out_date" required>
+											<input type="datetime-local" class="form-control" id="check-out-date" name="check_out" required>
 										</div>
 										<div class="mb-3">
-											<label for="guests" class="form-label">Number of Guests:</label>
-											<input type="number" class="form-control" id="guests" name="number_of_guests" required>
+											<label for="guests" class="form-label">Number of Persons</label>
+											<input type="number" class="form-control" id="guests" name="persons" required>
 										</div>
 										<button type="submit" class="btn btn-primary">Book Now</button>
 									</form>

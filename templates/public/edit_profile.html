@@ -1,0 +1,55 @@
+<!-- edit_profile.html -->
+
+{% extends 'public/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container mt-4 m-5">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3">
+                <div class="list-group">
+                    <a href="{% url 'accounts:my_bookings' %}" class="list-group-item list-group-item-action">My Bookings</a>
+                    <a href=" {% url 'accounts:profile_details' %}" class="list-group-item list-group-item-action">Profile Details</a>
+                    <a href="{% url 'accounts:change_password' %}" class="list-group-item list-group-item-action">Change Password</a>
+                    <a href="{% url 'accounts:edit_profile' %} " class="list-group-item list-group-item-action active">Edit Profile</a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9">
+                <h2>Edit Profile</h2>
+                
+                <!-- Edit Profile Form -->
+                <form method="post" action="{% url 'accounts:edit_profile' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name:</label>
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name:</label>
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ user.last_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender:</label>
+                        <select class="form-control" id="gender" name="gender" required>
+                            <option value="M" {% if user.gender == 'M' %}selected{% endif %}>Male</option>
+                            <option value="F" {% if user.gender == 'F' %}selected{% endif %}>Female</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address:</label>
+                        <textarea class="form-control" id="address" name="address" rows="3" required>{{ user.address }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
