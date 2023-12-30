@@ -1,4 +1,5 @@
 from django.db import models 
+from django.db.models import Sum , Avg
 
 
 class Hotel(models.Model):
@@ -23,7 +24,18 @@ class RoomCategory(models.Model):
     
     def __str__(self):
         return self.name
-    
+    @property
+    def total_reviews(self):
+        return self.review_set.count()
+
+    @property
+    def average_rating(self):
+         average  = self.review_set.aggregate(Avg('rating'))['rating__avg']
+         return round(average) if average is not None else 0
+     
+    @property
+    def available_rooms(self):
+        return self.room_set.filter(status='available').count()
 
 class Room(models.Model):
     name  = models.CharField(max_length=255 , unique=True)
@@ -47,6 +59,12 @@ class Booking(models.Model):
     persons = models.IntegerField()
     check_in = models.DateTimeField()
     check_out = models.DateTimeField()
+    STATUS_CHOICES = (
+        ('active' , 'active') , 
+        ('cancelled' , 'cancelled') , 
+        ('checked out' , 'checked out')
+    )
+    status = models.CharField(max_length=255 , choices=STATUS_CHOICES , default='active')
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     

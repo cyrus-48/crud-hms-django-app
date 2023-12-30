@@ -130,6 +130,7 @@ html,body{height: 100%;}
     font-weight: 600;
 
 }
+.primary-bg{background:#ff545a;}
 .header-top-right ul li a:hover{
     color:#ff7a40;
     font-size: 12px;

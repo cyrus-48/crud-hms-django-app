@@ -17,9 +17,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yxogwgit1$i%*bcigb@r9c-7sux0(nzu1ph=my%k*8ed3qo4ru' 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
 
-
+ 
 # Application definition
 
 INSTALLED_APPS = [
@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'hotel',
+    'dashboard',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -40,12 +42,12 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'hms.urls'
-AUTH_USER_MODEL =  'accounts.CustomUser'
-
+AUTH_USER_MODEL =  'accounts.CustomUser'  
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

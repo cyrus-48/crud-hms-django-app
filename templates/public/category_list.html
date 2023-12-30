@@ -9,22 +9,15 @@
                 <div class="single-explore-txt bg-theme-1">
                     <h2><a href="#">{{ category.name }} suite</a></h2>
                     <p class="explore-rating-price">
-                        <span class="explore-rating">5.0</span>
-                        <a href="#">10 ratings</a> 
+                        <span class="explore-rating">{{category.average_rating}}</span>
+                        <a href="#">{{ category.total_reviews}} ratings</a> 
                         <span class="explore-price-box"> 
                             <span class="explore-price">Ksh {{ category.cost }}</span>
                         </span>
-                        <a href="#">Available Rooms: <span class="text-warning">{{ category.rooms }}</span></a>
+                        <a href="#">Available Rooms: <span class="text-warning">{{ category.available_rooms }}</span></a>
                     </p>
                     <div class="explore-person">
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <div class="explore-person-img">
-                                    <p class="text-primary">
-                                        Amenities 
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="row"> 
                             <div class="col-sm-10">
                                 <p>
                                     {{ category.description | truncatewords:10 }}

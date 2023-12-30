@@ -2,6 +2,7 @@
 
 {% extends 'public/base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
     <div class="container mt-4 m-5">
@@ -16,6 +17,16 @@
                 <!-- Edit Profile Form -->
                 <form method="post" action="{% url 'accounts:edit_profile' %}">
                     {% csrf_token %}
+                    {% if request.GET.success_message %}
+                        <div class="alert alert-success" role="alert">
+                            {{ request.GET.success_message }}
+                        </div>
+                    {% endif %}
+                    {% if request.GET.error_message %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ request.GET.error_message }}
+                        </div>
+                    {% endif %}
                     <div class="mb-3">
                         <label for="first_name" class="form-label">First Name:</label>
                         <input type="text" class="form-control" id="first_name" name="first_name" value="{{ user.first_name }}" required>

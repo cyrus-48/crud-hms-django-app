@@ -4,14 +4,17 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from .models import * 
 from django.views.generic import ListView , DetailView  , CreateView , UpdateView , DeleteView
-from django.db.models import Sum
+from django.db.models import Sum , Avg
+from django.utils import timezone
+from dateutil.parser import parse
 
 def home(request):     
     room_categories  = RoomCategory.objects.all()[:4]
     categories_count = RoomCategory.objects.all().count()
     visitors_count = Booking.objects.all().count()
     rooms_count = RoomCategory.objects.aggregate(total_rooms = Sum('rooms'))['total_rooms'] 
-    reviews_count = Review.objects.all().count()
+    reviews_count = Review.objects.all().count() 
+    
 
     context = {
         'room_categories': room_categories,
@@ -63,22 +66,41 @@ def all_categories(request):
         'reviews_count':reviews_count
     }
     return render(request, 'public/all_categories.html' , context)
+
 @login_required(login_url='accounts:login')
 def booking(request):
+    user = request.user 
+
     if request.method == 'POST':
-        user = request.user
         room_id = request.POST['room']
         room = Room.objects.get(name=room_id)
-        check_in = request.POST['check_in']
-        check_out = request.POST['check_out']
-        persons = request.POST['persons'] 
+        check_in = parse(request.POST['check_in'])
+        check_out = parse(request.POST['check_out'])
+        persons = request.POST['persons']
+
         if room.status != 'available':
-            return HttpResponse('Room is not available') 
+            return HttpResponse('Room is not available')
+        print(f"Check-in: {check_in}, Check-out: {check_out}")
+        print(f"Existing Bookings: {Booking.objects.filter(room=room)}")
+ 
+        # Check for overlapping bookings
+        overlapping_bookings = Booking.objects.filter(
+            user=user,
+            check_in__lt=check_out,
+            check_out__gt=check_in
+        ).exists()
+
+        if overlapping_bookings:
+            error_message = 'you already have a booking  in the given time period'
+            return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)) + f'?error_message={error_message}')
+
+
         if check_in > check_out:
             return HttpResponse('Invalid dates')
-         
+
         if int(persons) > room.category.capacity:
-            return HttpResponse('Invalid number of persons') 
+            return HttpResponse('Invalid number of persons')
+
         # create booking
         booking = Booking.objects.create(
             room=room,
@@ -86,18 +108,43 @@ def booking(request):
             check_in=check_in,
             check_out=check_out,
             persons=persons
-        ) 
+        )
         booking.save()
+
         # update room status
         room.status = 'booked'
-        room.save() 
-        return HttpResponseRedirect(reverse('hotel:category' , args=(room.category.id,)))
+        room.save()
+
+        return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)))
 
     else:
         return HttpResponse('Invalid request')
-
     
- 
+    
+@login_required(login_url='accounts:login')
+def  checkout(request , booking_id):
+    booking = Booking.objects.get(id=booking_id)
+    booking.check_out = timezone.now()
+    booking.status = 'checked out'  
+    booking.save()
+    room = booking.room
+    room.status = 'available'
+    room.save()
+    return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)))
+
+@login_required(login_url='accounts:login')
+def  cancel_booking(request , booking_id):
+    booking = Booking.objects.get(id=booking_id)
+    if booking.check_in < timezone.now():
+        return HttpResponse('You cannot cancel this booking')
+    
+    room = booking.room
+    room.status = 'available'
+    room.save()
+    booking.status = 'cancelled'
+    booking.save()
+    success_message = 'Booking cancelled successfully' 
+    return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?success_message={success_message}')
     
 
 

@@ -75,17 +75,21 @@ def edit_profile(request):
         last_name  = request.POST.get('last_name')
         email = request.POST.get('email')
         address  = request.POST.get('address')
-        gender = request.POST.ger('gender')
-        user = request.user
-        
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.address = address
-        user.gender = gender
-        user.save()
-        
-        return HttpResponseRedirect(reverse('accounts:profile'))
+        gender = request.POST.get('gender')
+        try:
+             user = request.user
+             user.first_name = first_name
+             user.last_name = last_name
+             user.email = email
+             user.address = address
+             user.gender = gender
+             user.save()
+             success_message = 'Profile Updated Successfully'
+             return  HttpResponseRedirect(reverse('accounts:profile_details') + f'?success_message={success_message}')
+             
+        except:
+            error = 'Profile Update Failed'
+            return HttpResponseRedirect(reverse('accounts:profile_details') + f'?error_message={error}') 
     else:
         return render(request , 'public/profile.html' , {'message':'Invalid Request'})
     
@@ -152,19 +156,20 @@ def change_password_view(request):
 def change_password(request):
     if request.method == 'POST':
         old_password = request.POST.get('old_password')
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
+        new_password = request.POST.get('password1')
+        confirm_password = request.POST.get('password2')
         
         user = request.user
         if user.check_password(old_password):
             if new_password == confirm_password:
                 user.set_password(new_password)
                 user.save()
-                return HttpResponseRedirect(reverse('accounts:profile'))
+                success_message = 'Password Changed Successfully'
+                return HttpResponseRedirect(reverse('accounts:change_password') + f'?success_message={success_message}')
             else:
-                return render(request , 'public/change_password.html' , {'message':'Password Mismatch'})
+                return HttpResponseRedirect(reverse('accounts:change_password') + f'?error_message=Password Mismatch')
         else:
-            return render(request , 'public/change_password.html' , {'message':'Invalid Password'})
+            return  HttpResponseRedirect(reverse('accounts:change_password') + f'?error_message=Invalid Old Password')
     else:
         return render(request , 'public/change_password.html' , {'message':'Invalid Request'})
 

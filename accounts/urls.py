@@ -15,4 +15,5 @@ urlpatterns = [
     path('edit_password/' , change_password , name='edit_password'),
     path('my_booking/<int:id>/' ,  booking_details , name='booking_details'),
     path(('add_review/'), add_review, name='add_review'),
+    
 ]

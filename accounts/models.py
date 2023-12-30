@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
     email = models.EmailField(unique=True)
     gender = models.CharField(max_length=1,  blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to="user_images", blank=True, null=True)
 
     objects = CustomUserManager() 
     USERNAME_FIELD = 'email'

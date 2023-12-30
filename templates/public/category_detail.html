@@ -1,5 +1,6 @@
  {% extends 'public/base.html' %}
  {% load static %} 
+
  {% block content %}
 		<!--explore start -->
 		<section id="explore" class="explore">
@@ -17,15 +18,16 @@
                             <div class="single-explore-txt bg-theme-1">
                                 <h2><a href="#">{{ category.name }}</a></h2>
                                 <p class="explore-rating-price">
-                                    <span class="explore-rating">5.0</span>
-                                    <a href="#"> 10 ratings</a> 
+                                    <span class="explore-rating">{{category.average_rating}}</span>
+                                    <a href="#"> {{category.total_reviews}} ratings</a> 
                                     <span class="explore-price-box"> 
                                         <span class="explore-price">Ksh 5000</span>
                                     </span>
-                                     <a href="#">Available Rooms : <span class="text-warning ">{{available_rooms}}</span></a>
+                                     <a href="#">Available Rooms : <span class="text-warning ">{{available_rooms}}</span></a> |
+                                     <a href="#">Capacity : <span class="text-warning ">{{category.capacity}}</span></a>
                                 </p> 
                                 <div class="list-group">
-                                    <div  class="list-group-item list-group-item-action active" aria-current="true">
+                                    <div  class="list-group-item list-group-item-action primary-bg">
                                       <div class="d-flex w-100 justify-content-between">
                                         <h5 class="mb-1 text-white">Amenities</h5> 
                                       </div> 
@@ -54,6 +56,12 @@
 									{%  if available_rooms > 0%}
 									<form method="post" action="{% url 'hotel:book' %}">
 										{% csrf_token %}
+                                        {% load custom_filters %}
+                                        {% if request.GET.error_message %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ request.GET.error_message | urldecode }}
+                                        </div>
+                                        {% endif %}
                                         <div class="mb-3">
                                             <label for="room-number" class="form-label">Room Number:</label>
                                             <select class="form-control" id="room-number" name="room" required>
@@ -74,10 +82,10 @@
 											<label for="guests" class="form-label">Number of Persons</label>
 											<input type="number" class="form-control" id="guests" name="persons" required>
 										</div>
-										<button type="submit" class="btn btn-primary">Book Now</button>
+										<button type="submit" class="btn btn-custom">Book Now</button>
 									</form>
 									{% else %}
-										<p class="text-danger">No rooms available ,  Check later or choose another category</p>
+										<p class="text-danger">No rooms available ,  Check later or choose other <a href="{% url 'hotel:all_categories' %}">  Categories</a></p>
 									{% endif %}
                                 </div>
                                 <div class="explore-open-close-part">
@@ -88,8 +96,7 @@
                     </div>
 					 
 				</div>
-			</div><!--/.container-->
-
+			</div><!--/.container--> 
 		</section><!--/.explore-->
 		<!--explore end --> 
 {% endblock content %}

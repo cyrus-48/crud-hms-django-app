@@ -11,10 +11,13 @@
 
             <!-- Main Content -->
             <div class="col-md-9">
-                <h2>My Bookings</h2>
+                <div class="card-header primary-bg">
+                    <i class="bi bi-person"></i> <p class= "  text-white">My bookings </p>
+                </div>
             
                 {% if bookings %}
                     <table class="table responsive">
+                        
                         <thead>
                             <tr>
                                 <th scope="col">Booking ID</th>
@@ -31,14 +34,18 @@
                                     <td>{{ booking.check_in }}</td>
                                     <td>{{ booking.check_out }}</td>
                                     <td>
-                                        {% if booking.is_complete %}
+                                        {% if booking.status == 'active' %}
                                             <span class="badge bg-success">Complete</span>
-                                        {% else %}
-                                            <span class="badge bg-warning text-dark">Active</span>
+                                            {% endif %}
+                                        {% if booking.status == 'cancelled' %} 
+                                            <span class="badge bg-danger">Cancelled</span>
+                                            {% endif %}
+                                        {% if booking.status == 'checked out' %}
+                                            <span class="badge bg-warning text-dark">cancelled</span>
                                         {% endif %}
                                     </td>
                                     <td>
-                                        <a href="{% url 'accounts:booking_details' booking.id %}" class="btn btn-primary btn-sm">View</a> 
+                                        <a href="{% url 'accounts:booking_details' booking.id %}"><button  class="btn btn-custom btn-sm">View </button></a> 
                                     </td>
                                 </tr>
                             {% endfor %}

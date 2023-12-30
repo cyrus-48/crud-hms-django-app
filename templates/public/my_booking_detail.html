@@ -7,34 +7,56 @@
     <div class="container mt-4">
         <div class="row">
             <!-- Sidebar -->
-            {% include 'public/profile_sidebar.html' %}
-
+            {% include 'public/profile_sidebar.html' %} 
             <!-- Main Content -->
             <div class="col-md-9">
                 <div class="card">
+                    <h2 class="card-header primary-bg text-white">
+                        <i class="bi bi-bookmark text-white "></i> Booking Details
+                    </h2>
                     <div class="card-body">
-                        <h2 class="card-title">
-                            <i class="bi bi-bookmark text-primary"></i> Booking Details
-                        </h2>
+                        
             
                         {% if booking %}
-                            <div class="mb-3">
-                                <i class="bi bi-hash text-primary"></i>
-                                <strong class="text-primary">Booking ID:</strong> {{ booking.id }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <i class="bi bi-hash text-primary"></i>
+                                    <strong class="text-primary">Booking ID:</strong> {{ booking.id }}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <i class="bi bi-door-open text-primary"></i>
-                                <strong class="text-primary">Room Category:</strong> {{ booking.category.name }}
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <i class="bi bi-door-open text-primary"></i>
+                                    <strong class="text-primary">Room Category:</strong> {{ booking.room.category }}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <i class="bi bi-calendar text-primary"></i>
-                                <strong class="text-primary">Check-In Date:</strong> {{ booking.check_in }}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <i class="bi bi-calendar text-primary"></i>
+                                    <strong class="text-primary">Check-In Date:</strong> {{ booking.check_in }}
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <i class="bi bi-calendar-check text-primary"></i>
-                                <strong class="text-primary">Check-Out Date:</strong> {{ booking.check_out }}
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <i class="bi bi-calendar-check text-primary"></i>
+                                    <strong class="text-primary">Check-Out Date:</strong> {{ booking.check_out }}
+                                </div>
                             </div>
-            
+                        </div> 
+                        <div class="row">
+                            <div class=" col-sm-6 col-md-6"> 
+                                   <button  class="btn btn-custom"> <a href="{% url 'hotel:checkout' booking.id %}">Check Out</a></buttoon>
+                               
+                            </div>
+                            <div class="  col-sm-6 col-md-6"> 
+                             <button  class="btn btn-danger"> <a href="{% url 'hotel:cancel_booking' booking.id %}">Cancel Booking</a></button>
+                               
+                            </div>
+                        </div>
                             <!-- Reviews Section -->
                             <h3 class="card-title mt-4">
                                 <i class="bi bi-star text-success"></i>Recent Reviews
@@ -47,7 +69,7 @@
                                     <h5 class="mb-1">comment: {{review.comment}}</h5>
                                     <small>{{review.added_on}}</small>
                                   </div> 
-                                  <small>reviewed by: {{user.get_full_name}}</small>
+                                  <small>reviewed by: {{booking.user.get_full_name}}</small>
                                 </div>
                                  {% endfor %}
                               </div>
@@ -92,7 +114,7 @@
                                     </label>
                                     <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-custom">
                                     <i class="bi bi-check"></i> Submit Review
                                 </button>
                             </form>
