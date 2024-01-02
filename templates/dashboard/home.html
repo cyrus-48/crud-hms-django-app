@@ -1,0 +1,78 @@
+ {% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+                <div class="row g-3 my-2">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-4">720</h3>
+                                <p class="fs-5">Income</p>
+                            </div>
+                            <i class="fas fa-gift fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-4">{{ num_of_categories }}</h3>
+                                <p class="fs-5">Categories</p>
+                            </div>
+                            <i
+                                class="fas fa-hand-holding-usd fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-4">{{  num_of_rooms }}</h3>
+                                <p class="fs-5">Rooms</p>
+                            </div>
+                            <i class="fas fa-truck fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+                            <div>
+                                <h3 class="fs-4">{{ num_of_bookings }}</h3>
+                                <p class="fs-5">Bookings</p>
+                            </div>
+                            <i class="fas fa-chart-line fs-1 primary-text border rounded-full secondary-bg p-3"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-5">
+                    <h3 class="fs-4 mb-3">Recent Bookings</h3>
+                    <div class="col">
+                        <table class="table bg-white rounded shadow-sm  table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col" width="50">#</th>
+                                    <th scope="col">bookID</th>
+                                    <th scope="col">Customer</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">room</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <th scope="row">{{ forloop.counter }}</th>
+                                    <td>{{ booking.id }}</td>
+                                    <td>{{ booking.user.get_full_name }}</td>
+                                    <td>{{ booking.room.category }}</td>
+                                    <td>{{ booking.room }}</td>
+                                    <td>{{ booking.check_in}}</td>
+                                </tr>
+                                {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div> 
+{% endblock %}
+```

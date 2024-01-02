@@ -27,6 +27,7 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to="user_images", blank=True, null=True)
 
+    username = None
     objects = CustomUserManager() 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []   

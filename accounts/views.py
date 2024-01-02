@@ -14,6 +14,7 @@ def register_view(request):
         email = request.POST.get('email')
         gender = request.POST.get('gender')
         address = request.POST.get('address')
+        image = request.FILES.get('image')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirm_password')
          
@@ -25,6 +26,7 @@ def register_view(request):
         user.first_name = fname
         user.last_name = lname
         user.gender = gender
+        user.image = image
         user.address = address
         user.save()
         
@@ -109,8 +111,8 @@ def booking_details(request , id):
         booking = Booking.objects.get(id=id)
     except:
         return HttpResponseRedirect(reverse('accounts:my_booking'))
-    category = booking.room.category
-    reviews = Review.objects.filter(category=category)[:7]
+    category = booking.room.category 
+    reviews = Review.objects.filter(category=category,user=request.user)[:7]
     user = request.user
     category_id  = category.id 
     

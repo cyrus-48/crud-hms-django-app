@@ -23,6 +23,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,6 +109,72 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Hotel Management System",
+    "site_header": "Hotel Management System",
+    "site_brand": "Hotel Management System",
+    "site_logo": "/static/assets/auth/images/logo.png",
+    "welcome_sign": "Welcome to Hotel Management System",
+    "login_logo": "/static/images/logo.png",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "site_logo_classes": "img-circle elevation-3",
+    "welcome_sign": "Welcome to Hotel Management System",
+    "show_ui_builder": True,
+    "copyright": "Hotel Management System",
+    "search_model": "accounts.CustomUser",
+    "user_avatar": None,
+    
+    "show_footer": True,
+    "footer_text": "Hotel Management System",
+    "hide_apps": [],
+    "hide_models": [],
+    "custom_links": {}
+    ,
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdns": True,
+    "changeform_format": "horizontal_tabs",
+    "related_modal_active": True,
+    "changeform_format_overrides": {},
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-danger",
+    "accent": "accent-primary",
+    "navbar": "navbar-danger navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-maroon",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+    
+        
+ }  
 
 
 # Static files (CSS, JavaScript, Images)
