@@ -1,0 +1,68 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Edit Category{% endblock %}
+{% block content %} 
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class=" m-2 primary-text card shadow-sm p-3">Edit Category</h5>
+        </div>
+    </div>
+    <div class="card shadow-lg m-2">
+        <div class="col-md-12 p-5">
+            <form method="post" action="{% url 'dashboard:edit-category' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% include 'dashboard/message_include.html' %}
+                <input type="hidden" name="category_id" value="{{ category.id }}">
+                <div class="mb-3">
+                <div class="form-group">
+                    <label for="name"  class="form-label fw-bold">Category Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ category.name }}" required>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label for="description" class="form-label fw-bold">Category Description</label>
+                    <textarea class="form-control" id="description" name="description" required>{{ category.description }}</textarea>
+                </div>
+                <div class="row mt-2">
+                    <div class="mb-3 col-md-3 col-xl-3 col-sm-6 ">
+                    <div class="form-group">
+                        <label for="capacity" class="form-label fw-bold">Capacity</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" value="{{ category.capacity }}" required>
+                    </div>
+                </div>
+                    <div class="mb-3 col-md-3 col-xl-3 col-sm-6">
+                    <div class="form-group">
+                        <label for="beds" class="form-label fw-bold">Beds</label>
+                        <input type="number" class="form-control" id="beds" name="beds" value="{{ category.beds }}" required>
+                    </div>
+                    </div>
+                    <div class="mb-3 col-md-3 col-xl-3 col-sm-6">
+                    <div class="form-group">
+                        <label for="rooms" class="form-label fw-bold">Rooms</label>
+                        <input type="number" class="form-control" id="rooms" name="rooms" value="{{ category.rooms }}" required>
+                    </div>
+                </div>
+                    <div class="mb-3 col-md-3 col-xl-3 col-sm-6">
+                    <div class="form-group" >
+                        <label for="cost" class="form-label fw-bold">Cost</label>
+                        <input type="text" class="form-control" id="cost" name="cost" value="{{ category.cost }}" required>
+                    </div>
+                    </div
+                </div>
+
+                <div class="form-group">
+                    <label for="image" class="form-label fw-bold">Current Category Image</label>
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}" class="img-thumbnail" width="300px">
+                </div>
+                <div class="form-group">
+                    <label for="new_image"class="form-label fw-bold">New Category Image (Optional)</label>
+                    <input type="file" class="form-control-file" id="image" name="new_image">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Update Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

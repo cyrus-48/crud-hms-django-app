@@ -1,0 +1,49 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Manage Hotels{% endblock %}
+
+{% block content %} 
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="primary-text">Manage Hotels</h5>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'add_hotel' %}" class="btn btn-primary primary-bg ml-auto">Add Hotel</a>
+        </div> 
+    </div>
+    <div class="card shadow-lg m-5">
+        <div class="col-md-12">
+            <table class="table table-bordered" id="myDataTable">
+                <thead>
+                    <tr>
+                        <th>Hotel Name</th>
+                        <th>Description</th>
+                        <th>Added On</th>
+                        <th>Updated On</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hotel in hotels %}
+                        <tr>
+                            <td>{{ hotel.name }}</td>
+                            <td>{{ hotel.description }}</td>
+                            <td>{{ hotel.added_on }}</td>
+                            <td>{{ hotel.updated_on }}</td>
+                            <td>
+                                <a href="{% url 'edit_hotel' hotel_id=hotel.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                <a href="{% url 'delete_hotel' hotel_id=hotel.id %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> 
+        <script>
+            $(document).ready(function () {
+                $('#myDataTable').DataTable();
+            });
+        </script>
+    </div>
+{% endblock %}

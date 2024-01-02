@@ -1,0 +1,10 @@
+{% if request.GET.success_message%}
+<div class="alert alert-success" role="alert">
+    {{ request.GET.success_message }}
+</div>
+{% endif %}
+{% if request.GET.error_message%}
+<div class="alert alert-danger" role="alert">
+    {{ request.GET.error_message }}
+</div>
+{% endif %} 
