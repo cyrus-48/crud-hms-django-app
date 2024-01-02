@@ -5,6 +5,10 @@ from django.db.models import Sum , Avg
 class Hotel(models.Model):
     name  = models.CharField(max_length=255)
     description = models.TextField()
+    email = models.EmailField(default='hotel@gmail.com')
+    address = models.CharField(max_length=255 , default='Kathmandu')
+    
+    phone = models.CharField(max_length=255 , default='9840000000')
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     

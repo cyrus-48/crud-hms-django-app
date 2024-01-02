@@ -1,49 +1,46 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
 
-{% block title %}Manage Hotels{% endblock %}
+{% block title %}Edit Hotel{% endblock %}
 
 {% block content %} 
     <div class="row">
-        <div class="col-md-6">
-            <h5 class="primary-text">Manage Hotels</h5>
-        </div>
-        <div class="col-md-6">
-            <a href="{% url 'add_hotel' %}" class="btn btn-primary primary-bg ml-auto">Add Hotel</a>
-        </div> 
-    </div>
-    <div class="card shadow-lg m-5">
         <div class="col-md-12">
-            <table class="table table-bordered" id="myDataTable">
-                <thead>
-                    <tr>
-                        <th>Hotel Name</th>
-                        <th>Description</th>
-                        <th>Added On</th>
-                        <th>Updated On</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for hotel in hotels %}
-                        <tr>
-                            <td>{{ hotel.name }}</td>
-                            <td>{{ hotel.description }}</td>
-                            <td>{{ hotel.added_on }}</td>
-                            <td>{{ hotel.updated_on }}</td>
-                            <td>
-                                <a href="{% url 'edit_hotel' hotel_id=hotel.id %}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="{% url 'delete_hotel' hotel_id=hotel.id %}" class="btn btn-danger btn-sm">Delete</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <h5 class=" card shadow-sm primary-text p-3">Hotel details </h5>
+        </div>
+    </div>
+    <div class="card shadow-lg m-2 p-5">
+        <div class="col-md-12">
+            <form method="post" action="{% url 'dashboard:update-hotel' %}">
+                {% csrf_token %}
+                {% include 'dashboard/message_include.html' %}
+                <input type="hidden" name="hotel_id" value="{{ hotel.id }}">
+                <div class="form-group">
+                    <label for="name" class="form-label fw-bold">Hotel Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ hotel.name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" required>{{ hotel.description }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label fw-bold">Email</label>
+                    <input type="emai" class="form-control" id="location" name="email" value="{{ hotel.email }}" required>
+
+                <div class="form-group">
+                    <label for="location" class="form-label fw-bold">Address</label>
+                    <input type="text" class="form-control" id="address" name="address" value="{{ hotel.address }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="price" class="form-label fw-bold">Phone</label>
+                    <input type="number" class="form-control" id="phone" name="phone" value="{{ hotel.phone }}" required>
+                </div>  
+
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Update Hotel</button>
+                </div>
+            </form>
         </div> 
-        <script>
-            $(document).ready(function () {
-                $('#myDataTable').DataTable();
-            });
-        </script>
     </div>
 {% endblock %}

@@ -103,3 +103,38 @@ def edit_category(request ):
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:category-detail', args=(category.id,)) + f'?error_message={error_message}')
             
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def  manage_hotel(request):
+    hotel = Hotel.objects.all()[0]
+    context = {
+        'hotel': hotel,
+    }
+    return render(request, 'dashboard/hotel/manage_hotel.html', context)
+
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def update_hotel(request):
+    if request.method == 'POST':
+        hotel_id = request.POST['hotel_id']
+        try:
+            hotel = Hotel.objects.get(id=hotel_id)
+            hotel.name = request.POST['name']
+            hotel.email = request.POST['email']
+            hotel.phone = request.POST['phone']
+            hotel.address = request.POST['address']
+            hotel.description = request.POST['description'] 
+            hotel.save()
+            success_message = 'Hotel details  updated successfully'
+            return HttpResponseRedirect(reverse('dashboard:manage-hotel') + f'?success_message={success_message}')
+        except Hotel.DoesNotExist:
+            error_message = 'HOtel does not exist'
+            return HttpResponseRedirect(reverse('dashboard:manage-hotel') + f'?error_message={error_message}')
+        
+        except Exception as e:
+            error_message = 'Error occurred while updating hotel details '
+            return HttpResponseRedirect(reverse('dashboard:manage-hotel') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:manage-hotel') + f'?error_message={error_message}') 

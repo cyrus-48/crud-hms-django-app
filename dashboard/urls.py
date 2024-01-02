@@ -8,5 +8,7 @@ urlpatterns = [
     path('ajax-categories-fetch' , views.ajax_categories_fetch , name='ajax-categories-fetch'),
     path('category/<int:category_id>' , views.category_detail , name='category-detail'),
     path('edit-category/' , views.edit_category , name='edit-category'),
+    path('manage-hotel/' , views.manage_hotel , name='manage-hotel'),
+    path('update-hotel/' , views.update_hotel , name='update-hotel'),
                
 ]
