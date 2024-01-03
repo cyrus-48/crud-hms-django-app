@@ -13,5 +13,9 @@ urlpatterns = [
     path('category/', views.category, name='category'),
     path('add-category/', views.add_category, name='add-category'),
     path('delete-category/', views.category_delete, name='delete-category'),
+    
+    # manage rooms
+    path('manage-rooms/' , views.manage_rooms , name='manage-rooms'),
+    path('ajax-rooms-fetch/' , views.ajax_rooms_fetch , name='ajax-rooms-fetch'),
                
 ]

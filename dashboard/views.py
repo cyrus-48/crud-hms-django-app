@@ -185,3 +185,31 @@ def update_hotel(request):
     else:
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:manage-hotel') + f'?error_message={error_message}') 
+    
+    
+'''
+-----------------------ROOM VIEWS-----------------------
+'''
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def ajax_rooms_fetch(request):
+    rooms  = Room.objects.all()
+    data = []
+    print(rooms)
+    
+    for r in rooms:
+        data.append({
+            'id': r.id,
+            'name': r.name,
+            'category': r.category.name,
+            'status': r.status,
+            'date': r.added_on.strftime('%b %d, %Y'),
+        })
+    return JsonResponse({'data': data})
+        
+def manage_rooms(request):
+    rooms = Room.objects.all()
+    context = {
+        'rooms': rooms,
+    }
+    return render(request, 'dashboard/hotel/manage_rooms.html', context)
