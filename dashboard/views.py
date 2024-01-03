@@ -206,10 +206,76 @@ def ajax_rooms_fetch(request):
             'date': r.added_on.strftime('%b %d, %Y'),
         })
     return JsonResponse({'data': data})
-        
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')      
 def manage_rooms(request):
     rooms = Room.objects.all()
     context = {
         'rooms': rooms,
     }
     return render(request, 'dashboard/hotel/manage_rooms.html', context)
+
+
+#-------room detail 
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def room_detail(request , room_id):
+     try:
+         room = Room.objects.get(id=room_id)
+         status_choices = ['available' , 'booked' , 'not available']
+         categeories = RoomCategory.objects.all()
+         context = {
+                'room': room,
+                'status_choices': status_choices,
+                'categories': categeories,
+         }
+         return render(request, 'dashboard/hotel/edit_room.html', context)
+     
+     except Room.DoesNotExist:
+            error_message = 'Room does not exist'
+            return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def edit_room(request):
+    if request.method == 'POST':
+        room_id = request.POST['room_id']
+        try:
+            room = Room.objects.get(id=room_id)
+            room.name = request.POST['name']
+            room.category_id = request.POST['category']
+            room.status = request.POST['status']
+            room.save()
+            success_message = 'Room details updated successfully'
+            return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?success_message={success_message}')
+        except Room.DoesNotExist:
+            error_message = 'Room does not exist'
+            return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?error_message={error_message}')
+        
+        except Exception as e:
+            error_message = 'Error occurred while updating room details '
+            return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def delete_room(request):
+    if request.method == 'POST':
+        room_id = request.POST['room_id']
+        try:
+            room = Room.objects.get(id=room_id)
+            room.delete()
+            success_message = 'Room deleted successfully'
+            return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while deleting room'
+            return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
+         
+    

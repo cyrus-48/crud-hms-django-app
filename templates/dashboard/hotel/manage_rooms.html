@@ -49,7 +49,7 @@
                                         { 
                                             data: null,
                                             render: function (data, type, row) {
-                                                var editUrl = "{% url 'dashboard:category-detail' category_id=0 %}".replace('0', row.id);
+                                                var editUrl = "{% url 'dashboard:room-detail' room_id=0 %}".replace('0', row.id);
                                                 return '<a href="' + editUrl + '" class="btn btn-primary btn-sm">Edit</a>';
                                             }
                                         },
