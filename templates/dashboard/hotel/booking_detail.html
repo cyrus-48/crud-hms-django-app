@@ -38,7 +38,7 @@
                     <dd class="col-sm-8">{{ booking.status }}</dd>
  
                     <dt class="col-sm-3"><i class="fas fa-dollar-sign"></i> Total Cost:</dt>
-                    <dd class="col-sm-9">${{ booking.total_cost }}</dd>
+                    <dd class="col-sm-9">Ksh {{ booking.total_cost }}</dd>
                 </dl>
             </div>
 
@@ -58,7 +58,7 @@
                     <dd class="col-sm-9">{{ booking.room.get_status_display }}</dd>
                     
                     <dt class="col-sm-3"><i class="fas fa-dollar-sign"></i> Unit Price:</dt>
-                    <dd class="col-sm-9">Ksh - {{ booking.room.category.cost }}</dd>
+                    <dd class="col-sm-9">Ksh - {{ booking.room.category.cost  }}</dd>
                 </dl>
             </div>
 
@@ -133,21 +133,21 @@
                             </label>
                             <input type="number" class="form-control" id="persons" name="persons" value="{{ booking.persons }}" required>
                         </div>
-    
-                        <div class="mb-3">
-                            <label for="checkin" class="form-label fw-bold">
-                                <i class="fas fa-calendar-check"></i> Check-in Date
-                            </label>
-                            <input type="datetime-local" class="form-control" id="checkin" name="checkin" value="{{ booking.check_in|date:'Y-m-d\TH:i' }}" required disabled>
-                        </div>
-    
-                        <div class="mb-3">
-                            <label for="checkout" class="form-label fw-bold">
-                                <i class="fas fa-calendar-times"></i> Check-out Date
-                            </label>
-                            <input type="datetime-local" class="form-control" id="checkout" name="checkout" value="{{ booking.check_out|date:'Y-m-d\TH:i' }}"  required>
-                        </div>
-    
+                        <div class="row">
+                            <div class="col-md-6  mb-3">
+                                <label for="checkin" class="form-label fw-bold">
+                                    <i class="fas fa-calendar-check"></i> Check-in Date
+                                </label>
+                                <input type="datetime-local" class="form-control" id="checkin" name="checkin" value="{{ booking.check_in|date:'Y-m-d\TH:i' }}" required disabled>
+                            </div>
+        
+                            <div class=" col-md-6 mb-3  ">
+                                <label for="checkout" class="form-label fw-bold">
+                                    <i class="fas fa-calendar-times"></i> Check-out Date
+                                </label>
+                                <input type="datetime-local" class="form-control" id="checkout" name="checkout" value="{{ booking.check_out|date:'Y-m-d\TH:i' }}"  required>
+                            </div>
+                        </div> 
                         <div class="mb-3">
                             <label for="status" class="form-label fw-bold">
                                 <i class="fas fa-info-circle"></i> Booking Status
@@ -176,7 +176,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
+    </div> 
 {% endblock %}

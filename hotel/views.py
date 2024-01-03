@@ -145,7 +145,7 @@ def  cancel_booking(request , booking_id):
     booking.save()
     success_message = 'Booking cancelled successfully' 
     return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?success_message={success_message}')
-    
+
 
 
 

@@ -29,5 +29,8 @@ urlpatterns = [
     path('booking/<int:booking_id>' , views.booking_detail , name='booking-detail'),
     path('edit-booking/<int:booking_id>' , views.edit_booking , name='edit-booking'),
     path('check-out/<int:booking_id>' , views.check_out , name='check-out'),
+    path('booking/',views.booking , name='booking'),
+    path('add-booking/',views.add_booking , name='add-booking'),
+    path('fetch-available-rooms/' , views.fetch_available_rooms , name='fetch-available-rooms'),
                
 ]

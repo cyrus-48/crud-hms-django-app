@@ -8,6 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
+from dateutil.parser import parse
+
 
 
 
@@ -379,4 +381,92 @@ def edit_booking(request , booking_id):
     except Exception as e:
         error_message = 'Error occurred while updating booking'
         return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?error_message={error_message}')
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def booking(request):
+    users = CustomUser.objects.all()
+    rooms = Room.objects.filter(status='available')
+    categories = RoomCategory.objects.all()
+    context =  {
+        'users': users ,
+        'rooms': rooms ,
+        'categories': categories
+        }
+    
+    return render(request, 'dashboard/hotel/add_booking.html' ,context )
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def add_booking(request):
+    if request.method == 'POST':
+        user_id =  request.POST['user']
+        user = CustomUser.objects.get(id=user_id)
+        room_id = request.POST['room']
+        room = Room.objects.get(id=room_id)
+        check_in = parse(request.POST['check_in'])
+        check_out = parse(request.POST['check_out'])
+        persons = request.POST['persons']
+
+        if room.status != 'available':
+            return HttpResponse('Room is not available')
+        print(f"Check-in: {check_in}, Check-out: {check_out}")
+        print(f"Existing Bookings: {Booking.objects.filter(room=room)}")
+
+        # Check for overlapping bookings
+        overlapping_bookings = Booking.objects.filter(
+            user=user,
+            check_in__lt=check_out,
+            check_out__gt=check_in
+        ).exists()
+
+        if overlapping_bookings:
+            error_message = 'The user already have a booking  in the given time period'
+            return HttpResponseRedirect(reverse('dashboard:booking') + f'?error_message={error_message}')
+
+
+        if check_in > check_out:
+            return HttpResponse('Invalid dates')
+
+        if int(persons) > room.category.capacity: 
+            error_message = 'Invalid number of persons'
+            return HttpResponseRedirect(reverse('dashboad:booking') + f'?error_message={error_message}')
+
+        # create booking
+        booking = Booking.objects.create(
+            room=room,
+            user=user,
+            check_in=check_in,
+            check_out=check_out,
+            persons=persons
+        )
+        booking.save()
+
+        # update room status
+        room.status = 'booked'
+        room.save()
+
+        success_message = 'Booking added successfully'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?success_message={success_message}')
+
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:booking') + f'?error_message={error_message}')
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def fetch_available_rooms(request):
+    category_id = request.GET.get('category_id')
+    data = []
+    # Your logic to filter available rooms based on the selected category
+    available_rooms = Room.objects.filter(status='available', category_id=category_id)
+    for r in available_rooms:
+        data.append({
+            'id': r.id,
+            'name': r.name,
+        })
+    print(data)
+
+    return JsonResponse({'rooms': data})
+    
     

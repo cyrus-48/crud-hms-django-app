@@ -72,6 +72,11 @@ class Booking(models.Model):
     added_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     
+    @property
+    def total_cost(self):
+        num_of_days = (self.check_out - self.check_in).days
+        return self.room.category.cost * num_of_days * self.persons
+    
     def __str__(self):
         return self.user.email
     
