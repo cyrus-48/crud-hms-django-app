@@ -20,5 +20,7 @@ urlpatterns = [
     path('room/<int:room_id>' , views.room_detail , name='room-detail'),
     path('edit-room/' , views.edit_room , name='edit-room'), 
     path('delete-room/' , views.delete_room , name='delete-room'),
+    path('room/',views.room , name='room'),
+    path('add-room/',views.add_room , name='add-room'),
                
 ]

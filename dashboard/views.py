@@ -278,4 +278,31 @@ def delete_room(request):
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
          
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def room(request):
+    categories = RoomCategory.objects.all()
+    room = Room 
+    context = {
+        'categories': categories,
+        'room': room,
+    }
+    return render(request, 'dashboard/hotel/add_room.html', context)    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def add_room(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        category = request.POST['category']
+        status = request.POST['status']
+        try:
+            room = Room.objects.create(name=name, category_id=category, status=status)
+            success_message = 'Room added successfully'
+            return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while adding room'
+            return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
     
