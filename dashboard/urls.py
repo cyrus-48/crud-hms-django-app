@@ -38,7 +38,7 @@ urlpatterns = [
     path('ajax-users-fetch/' , views.ajax_users_fetch , name='ajax-users-fetch'),
     path('user/<int:user_id>' , views.user_detail , name='user-detail'),
     path('edit-user/' , views.edit_user , name='edit-user'),
-    path('delete-user/' , views.delete_user , name='delete-user'),
+    path('delete-user/<int:user_id>' , views.delete_user , name='delete-user'),
     path('user/',views.user , name='user'),
     path('add-user/',views.add_user , name='add-user'),
                

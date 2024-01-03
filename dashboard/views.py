@@ -532,20 +532,19 @@ def edit_user(request):
     
 @login_required(login_url='accounts:login')
 @staff_member_required(login_url='accounts:login')
-def delete_user(request):
-    if request.method == 'POST':
-        user_id = request.POST['user_id']
-        try:
-            user = CustomUser.objects.get(id=user_id)
-            user.delete()
-            success_message = 'User deleted successfully'
-            return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?success_message={success_message}')
-        except Exception as e:
-            error_message = 'Error occurred while deleting user'
-            return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?error_message={error_message}')
-    else:
-        error_message = 'Invalid request'
+def delete_user(request , user_id):
+    try:
+        user = CustomUser.objects.get(id=user_id)
+        user.delete()
+        success_message = 'User deleted successfully'
+        return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?success_message={success_message}')
+    except CustomUser.DoesNotExist:
+        error_message = 'User does not exist'
         return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?error_message={error_message}')
+    except Exception as e:
+        error_message = 'Error occurred while deleting user'
+        return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?error_message={error_message}')
+    
     
     
 @login_required(login_url='accounts:login')
