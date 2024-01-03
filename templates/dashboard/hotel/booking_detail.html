@@ -1,0 +1,175 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Booking Detail{% endblock %}
+{% block content %} 
+    <div class="row">
+        <div class="col-md-12">
+            <h5 class="m-2 primary-text card shadow-sm p-3">
+                <i class="fas fa-info-circle"></i> Booking Detail
+            </h5>
+        </div>
+    </div>
+    <div class="card shadow-lg m-2">
+        <div class="col-md-12 p-5">
+            {% include 'dashboard/message_include.html' %}
+            <div class="mb-3">
+                <h6 class="fw-bold">
+                    <i class="fas fa-book"></i> Booking Information
+                </h6>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3"><i class="fas fa-id-card"></i> Booking ID:</dt>
+                    <dd class="col-sm-9">{{ booking.id }}</dd>
+
+                    <dt class="col-sm-3"><i class="fas fa-user"></i> Client Name:</dt>
+                    <dd class="col-sm-9">{{ booking.user.get_full_name }}</dd>
+
+                    <dt class="col-sm-3"><i class="fas fa-user"></i> Number Persons:</dt>
+                    <dd class="col-sm-9">{{ booking.persons }}</dd>
+
+                    <dt class="col-sm-4"><i class="fas fa-calendar-check"></i> Check-in Date:</dt>
+                    <dd class="col-sm-8">{{ booking.check_in }}</dd>
+
+                    <dt class="col-sm-4"><i class="fas fa-calendar-times"></i> Check-out Date:</dt>
+                    <dd class="col-sm-8">{{ booking.check_out }}</dd>
+ 
+                    <dt class="col-sm-3"><i class="fas fa-dollar-sign"></i> Total Cost:</dt>
+                    <dd class="col-sm-9">${{ booking.total_cost }}</dd>
+                </dl>
+            </div>
+
+            <div class="mb-3">
+                <h6 class="fw-bold">
+                    <i class="fas fa-bed"></i> Room Information
+                </h6>
+                <hr>
+                <dl class="row">
+                    <dt class="col-sm-3"><i class="fas fa-door-open"></i> Room Name:</dt>
+                    <dd class="col-sm-9">{{ booking.room.name }}</dd>
+
+                    <dt class="col-sm-4"><i class="fas fa-bed"></i> Room Category:</dt>
+                    <dd class="col-sm-8">{{ booking.room.category.name }}</dd>
+
+                    <dt class="col-sm-3"><i class="fas fa-info-circle"></i> Room Status:</dt>
+                    <dd class="col-sm-9">{{ booking.room.get_status_display }}</dd>
+                    
+                    <dt class="col-sm-3"><i class="fas fa-dollar-sign"></i> Unit Price:</dt>
+                    <dd class="col-sm-9">Ksh - {{ booking.room.category.cost }}</dd>
+                </dl>
+            </div>
+
+            <div class="mb-3">
+                <div class="row">
+                <button type="button" class="btn btn-primary col m-4" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                    <i class="fas fa-sign-out-alt"></i> Checkout
+                </button>
+                <button type="button" class="btn btn-success col m-4" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <i class="fas fa-edit"></i> Edit Details
+                </button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkoutModalLabel">Confirm Checkout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to checkout this booking?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <a href="{% url 'dashboard:check-out' booking_id=booking.id %}" class="btn btn-primary">
+                        <i class="fas fa-sign-out-alt"></i> Checkout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Booking Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'dashboard:edit-booking' booking_id=booking.id %}">
+                        {% csrf_token %} 
+    
+                        <div class="mb-3">
+                            <label for="room" class="form-label fw-bold">
+                                <i class="fas fa-door-open"></i> Room
+                            </label>
+                            <input type="text" class="form-control" id="room" name="room" value="{{ booking.room.name }}" disabled>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="user" class="form-label fw-bold">
+                                <i class="fas fa-user"></i> Client Name
+                            </label>
+                            <input type="text" class="form-control" id="user" name="user" value="{{ booking.user.get_full_name }}" disabled>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="persons" class="form-label fw-bold">
+                                <i class="fas fa-user"></i> Number of Persons
+                            </label>
+                            <input type="number" class="form-control" id="persons" name="persons" value="{{ booking.persons }}" required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="checkin" class="form-label fw-bold">
+                                <i class="fas fa-calendar-check"></i> Check-in Date
+                            </label>
+                            <input type="datetime-local" class="form-control" id="checkin" name="checkin" value="{{ booking.check_in|date:'Y-m-d\TH:i' }}" required disabled>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="checkout" class="form-label fw-bold">
+                                <i class="fas fa-calendar-times"></i> Check-out Date
+                            </label>
+                            <input type="datetime-local" class="form-control" id="checkout" name="checkout" value="{{ booking.check_out|date:'Y-m-d\TH:i' }}"  required>
+                        </div>
+    
+                        <div class="mb-3">
+                            <label for="status" class="form-label fw-bold">
+                                <i class="fas fa-info-circle"></i> Booking Status
+                            </label>
+                            <input type="text" class="form-control" id="status" name="status" value="{{ booking.get_status_display }}" disabled>
+                        </div>
+    
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-check"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button type="button" class="btn btn-success">
+                        <i class="fas fa-check"></i> Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

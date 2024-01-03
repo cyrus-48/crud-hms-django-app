@@ -22,5 +22,12 @@ urlpatterns = [
     path('delete-room/' , views.delete_room , name='delete-room'),
     path('room/',views.room , name='room'),
     path('add-room/',views.add_room , name='add-room'),
+    
+    #bookings 
+    path('manage-bookings/' , views.manage_bookings , name='manage-bookings'),
+    path('ajax-bookings-fetch/' , views.ajax_bookings_fetch , name='ajax-bookings-fetch'),
+    path('booking/<int:booking_id>' , views.booking_detail , name='booking-detail'),
+    path('edit-booking/<int:booking_id>' , views.edit_booking , name='edit-booking'),
+    path('check-out/<int:booking_id>' , views.check_out , name='check-out'),
                
 ]

@@ -306,3 +306,77 @@ def add_room(request):
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:manage-rooms') + f'?error_message={error_message}')
     
+#-----------------BOOKING VIEWS--------------------
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def manage_bookings(request):
+    bookings = Booking.objects.all()
+    context = {
+        'bookings': bookings,
+    }
+    return render(request, 'dashboard/hotel/manage_bookings.html', context)
+
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def ajax_bookings_fetch(request):
+    bookings = Booking.objects.all()
+    data = [] 
+    for booking in bookings:
+        data.append({
+            'id': booking.id,
+            'customer': booking.user.get_full_name(),
+            'room': booking.room.name,
+            'category': booking.room.category.name,
+            'check_in': booking.check_in.strftime('%b %d, %Y'),
+            'check_out': booking.check_out.strftime('%b %d, %Y'),
+            'status': booking.status,
+            'date': booking.added_on.strftime('%b %d, %Y'),
+        })
+
+    return JsonResponse({'data': data})
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def booking_detail(request, booking_id):
+    booking = get_object_or_404(Booking, pk=booking_id)
+    context = {
+        'booking': booking,
+    }
+    return render(request, 'dashboard/hotel/booking_detail.html', context)
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def check_out(request , booking_id ):
+    try: 
+        booking = Booking.objects.get(id=booking_id)
+        room = booking.room
+        booking.status = 'checked out'
+        room.status = 'available'
+        room.save()
+        booking.save()
+        success_message = 'Customer checked out successfully'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?success_message={success_message}')
+    except Booking.DoesNotExist:
+        error_message = 'Booking does not exist'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?error_message={error_message}')
+
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def edit_booking(request , booking_id):
+    try:
+        booking = Booking.objects.get(id=booking_id)
+        booking.persons = request.POST['persons']
+        booking.check_out = request.POST['checkout']
+        print(f" Check-out: {booking.check_out}")
+        booking.save()
+        success_message = 'Booking updated successfully'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?success_message={success_message}')
+    except Booking.DoesNotExist:
+        error_message = 'Booking does not exist'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?error_message={error_message}')
+    except Exception as e:
+        error_message = 'Error occurred while updating booking'
+        return HttpResponseRedirect(reverse('dashboard:booking-detail', args=(booking.id,)) + f'?error_message={error_message}')
+    
