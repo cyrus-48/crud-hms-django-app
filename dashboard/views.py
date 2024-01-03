@@ -468,5 +468,11 @@ def fetch_available_rooms(request):
     print(data)
 
     return JsonResponse({'rooms': data})
+
+
+#----------------manage users -------------------
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+
     
     

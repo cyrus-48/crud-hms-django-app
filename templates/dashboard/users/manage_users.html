@@ -1,6 +1,70 @@
 {% extends 'dashboard/base.html' %}
 {% load static %}
-{% block title %}  Manage Users {% endblock %}
-{% block content %}
-
+{% block title %}Dashboard{% endblock %}
+{% block content %} 
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="primary-text">Manage categories</h5>
+        </div>
+        <div class="col-md-6">
+            <a href="{% url 'dashboard:user' %} " class="btn btn-primary primary-bg ml-auto">Add booking</a>
+        </div> 
+    </div>
+    <div class="card shadow-lg mt-2">
+        <div class="col-md-12 p-5">
+            {% include  'dashboard/message_include.html' %}
+            <table class="table table-bordered responsive"  id="myDataTable">
+                <thead>
+                    <tr>
+                        <th>BookingId</th> 
+                        <th>Client</th>
+                        <th>Room</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div> 
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                $(document).ready(function () {
+                    // fetch data from the server
+                    function fetchCategoryData() {
+                        $.ajax({
+                            url: 'http://127.0.0.1:8000/dashboard/ajax-users-fetch',
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                $('#myDataTable').DataTable({
+                                    data: data.data,
+                                    columns: [
+                                        { data: 'id' },
+                                        { data: 'customer' },
+                                        { data: 'room' },
+                                        { data: 'category' },
+                                        { data: 'status' },
+                                        { 
+                                            data: null,
+                                            render: function (data, type, row) {
+                                                var editUrl = "{% url 'dashboard:user-detail' user_id=0 %}".replace('0', row.id);
+                                                return '<a href="' + editUrl + '" class="btn btn-primary btn-sm">Edit</a>';
+                                            }
+                                        },
+                                    ],
+                                });
+                            }
+                        });
+                    }
+                    fetchCategoryData(); 
+                });       // fetch data every 1000 milliseconds (1 second)
+                   
+            });
+            
+        </script>
+    </div>
 {% endblock %}
