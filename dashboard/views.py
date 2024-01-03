@@ -503,10 +503,7 @@ def user_detail(request, user_id):
     context = {
         'user': user,
     }
-    return render(request, 'dashboard/users/user_detail.html', context)
-
-
-
+    return render(request, 'dashboard/users/user_detail.html', context) 
 @login_required(login_url='accounts:login')
 @staff_member_required(login_url='accounts:login')
 def edit_user(request):
@@ -564,7 +561,9 @@ def add_user(request):
         last_name = request.POST['last_name'] 
         email = request.POST['email']
         password = request.POST['password']
-        is_staff = request.POST['role'] == 'staff'
+        is_staff = request.POST['role'] 
+        address = request.POST['address']
+        gender = request.POST['gender']
         image = request.FILES['image'] if 'image' in request.FILES else None
         try:
             user = CustomUser.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, is_staff=is_staff, image=image)
