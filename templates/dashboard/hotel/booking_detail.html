@@ -24,14 +24,18 @@
                     <dt class="col-sm-3"><i class="fas fa-user"></i> Client Name:</dt>
                     <dd class="col-sm-9">{{ booking.user.get_full_name }}</dd>
 
-                    <dt class="col-sm-3"><i class="fas fa-user"></i> Number Persons:</dt>
-                    <dd class="col-sm-9">{{ booking.persons }}</dd>
+                    <dt class="col-sm-4"><i class="fas fa-user"></i> Number Persons:</dt>
+                    <dd class="col-sm-8">{{ booking.persons }}</dd>
 
                     <dt class="col-sm-4"><i class="fas fa-calendar-check"></i> Check-in Date:</dt>
                     <dd class="col-sm-8">{{ booking.check_in }}</dd>
 
                     <dt class="col-sm-4"><i class="fas fa-calendar-times"></i> Check-out Date:</dt>
                     <dd class="col-sm-8">{{ booking.check_out }}</dd>
+ 
+
+                    <dt class="col-sm-4"><i class="fas fa-calendar-times"></i> Status:</dt>
+                    <dd class="col-sm-8">{{ booking.status }}</dd>
  
                     <dt class="col-sm-3"><i class="fas fa-dollar-sign"></i> Total Cost:</dt>
                     <dd class="col-sm-9">${{ booking.total_cost }}</dd>
@@ -60,12 +64,15 @@
 
             <div class="mb-3">
                 <div class="row">
+                {% if booking.status == "active" %}
                 <button type="button" class="btn btn-primary col m-4" data-bs-toggle="modal" data-bs-target="#checkoutModal">
                     <i class="fas fa-sign-out-alt"></i> Checkout
                 </button>
                 <button type="button" class="btn btn-success col m-4" data-bs-toggle="modal" data-bs-target="#editModal">
                     <i class="fas fa-edit"></i> Edit Details
                 </button>
+                {% endif %}
+               
             </div>
             </div>
         </div>
