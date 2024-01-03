@@ -10,5 +10,8 @@ urlpatterns = [
     path('edit-category/' , views.edit_category , name='edit-category'),
     path('manage-hotel/' , views.manage_hotel , name='manage-hotel'),
     path('update-hotel/' , views.update_hotel , name='update-hotel'),
+    path('category/', views.category, name='category'),
+    path('add-category/', views.add_category, name='add-category'),
+    path('delete-category/', views.category_delete, name='delete-category'),
                
 ]

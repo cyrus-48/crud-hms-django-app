@@ -102,6 +102,53 @@ def edit_category(request ):
    else:
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:category-detail', args=(category.id,)) + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def category_delete(request):
+    if request.method == 'POST':
+        category_id = request.POST['category_id']
+        try:
+            category = RoomCategory.objects.get(id=category_id)
+            category.delete()
+            success_message = 'Category deleted successfully'
+            return HttpResponseRedirect(reverse('dashboard:manage-categories') + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while deleting category'
+            return HttpResponseRedirect(reverse('dashboard:manage-categories') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:manage-categories') + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def category(request):
+    return render(request, 'dashboard/hotel/add_category.html')
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def add_category(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        cost = request.POST['cost']
+        beds = request.POST['beds']
+        rooms = request.POST['rooms']
+        capacity = request.POST['capacity']
+        description = request.POST['description']
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        
+        try:
+            category = RoomCategory.objects.create(name=name, cost=cost, beds=beds, rooms=rooms, capacity=capacity, description=description, image=image)
+            success_message = 'Category added successfully'
+            return HttpResponseRedirect(reverse('dashboard:category-detail', args=(category.id,)) + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while adding category'
+            return HttpResponseRedirect(reverse('dashboard:category') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:category') + f'?error_message={error_message}')
             
 @login_required(login_url='accounts:login')
 @staff_member_required(login_url='accounts:login')
