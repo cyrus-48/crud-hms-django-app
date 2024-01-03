@@ -7,7 +7,7 @@
             <h5 class="primary-text">Manage categories</h5>
         </div>
         <div class="col-md-6">
-            <a href="{% url 'dashboard:user' %} " class="btn btn-primary primary-bg ml-auto">Add booking</a>
+            <a href="{ url 'dashboard:user' }" class="btn btn-primary primary-bg ml-auto">Add user</a>
         </div> 
     </div>
     <div class="card shadow-lg mt-2">
@@ -16,11 +16,11 @@
             <table class="table table-bordered responsive"  id="myDataTable">
                 <thead>
                     <tr>
-                        <th>BookingId</th> 
-                        <th>Client</th>
-                        <th>Room</th>
-                        <th>Category</th>
-                        <th>Status</th>
+                        <th>UserID</th> 
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -44,10 +44,10 @@
                                     data: data.data,
                                     columns: [
                                         { data: 'id' },
-                                        { data: 'customer' },
-                                        { data: 'room' },
-                                        { data: 'category' },
-                                        { data: 'status' },
+                                        { data: 'name' },
+                                        { data: 'email' },
+                                        { data: 'role' },
+                                        { data: 'date' },
                                         { 
                                             data: null,
                                             render: function (data, type, row) {

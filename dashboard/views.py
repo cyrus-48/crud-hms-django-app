@@ -473,6 +473,109 @@ def fetch_available_rooms(request):
 #----------------manage users -------------------
 @login_required(login_url='accounts:login')
 @staff_member_required(login_url='accounts:login')
+def manage_users(request):
+    users = CustomUser.objects.all()
+    context = {
+        'users': users,
+    }
+    return render(request, 'dashboard/users/manage_users.html', context)
 
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def ajax_users_fetch(request):
+    users = CustomUser.objects.all()
+    data = []
+    for user in users:
+        data.append({
+            'id': user.id,
+            'name': user.get_full_name(),
+            'email': user.email,
+            'role': 'Staff' if user.is_staff else 'Client',
+            'date': user.date_joined.strftime('%b %d, %Y'),
+        })
+
+    return JsonResponse({'data': data})
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def user_detail(request, user_id):
+    user = get_object_or_404(CustomUser, pk=user_id)
+    context = {
+        'user': user,
+    }
+    return render(request, 'dashboard/users/user_detail.html', context)
+
+
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def edit_user(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        print("user id ------------",user_id)
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.email = request.POST['email']
+            if 'new_image' in request.FILES:
+                user.image = request.FILES['new_image']
+            user.save()
+            success_message = 'User details updated successfully'
+            return HttpResponseRedirect(reverse('dashboard:user-detail', args=(user.id,)) + f'?success_message={success_message}')
+        except CustomUser.DoesNotExist:
+            error_message = 'User does not exist'
+            return HttpResponseRedirect(reverse('dashboard:user-detail', args=(user.id,)) + f'?error_message={error_message}')
+        except Exception as e:
+            error_message = 'Error occurred while updating user details'
+            return HttpResponseRedirect(reverse('dashboard:user-detail', args=(user.id,)) + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:user-detail', args=(user.id,)) + f'?error_message={error_message}')   
     
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def delete_user(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            user.delete()
+            success_message = 'User deleted successfully'
+            return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while deleting user'
+            return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:manage-users') + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def user(request):
+    return render(request, 'dashboard/users/add_user.html')
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def add_user(request):
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name'] 
+        email = request.POST['email']
+        password = request.POST['password']
+        is_staff = request.POST['role'] == 'staff'
+        image = request.FILES['image'] if 'image' in request.FILES else None
+        try:
+            user = CustomUser.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, is_staff=is_staff, image=image)
+            success_message = 'User added successfully'
+            return HttpResponseRedirect(reverse('dashboard:user-detail', args=(user.id,)) + f'?success_message={success_message}')
+        except Exception as e:
+            error_message = 'Error occurred while adding user'
+            return HttpResponseRedirect(reverse('dashboard:user') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:user') + f'?error_message={error_message}')
+    
+
     

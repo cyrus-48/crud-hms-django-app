@@ -32,5 +32,11 @@ urlpatterns = [
     path('booking/',views.booking , name='booking'),
     path('add-booking/',views.add_booking , name='add-booking'),
     path('fetch-available-rooms/' , views.fetch_available_rooms , name='fetch-available-rooms'),
+    
+    #manage users
+    path('manage-users/' , views.manage_users , name='manage-users'),
+    path('ajax-users-fetch/' , views.ajax_users_fetch , name='ajax-users-fetch'),
+    path('user/<int:user_id>' , views.user_detail , name='user-detail'),
+    path('edit-user/' , views.edit_user , name='edit-user'),
                
 ]
