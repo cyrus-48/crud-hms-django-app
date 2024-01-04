@@ -7,8 +7,8 @@
             <h5 class="m-2 primary-text card shadow-sm p-3">Add Room</h5>
         </div>
     </div>
-    <div class="card shadow-lg m-2">
-        <div class="col-md-12 p-5">
+    <div class="card shadow-lg m-1">
+        <div class="col-md-12 p-1">
             <form method="post" action="{% url 'dashboard:add-room' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% include 'dashboard/message_include.html' %}
