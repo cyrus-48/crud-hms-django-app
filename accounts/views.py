@@ -44,6 +44,8 @@ def login_view(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            if user.is_staff:
+                return HttpResponseRedirect(reverse('dashboard:dashboard-index'))
             return HttpResponseRedirect(reverse('hotel:home'))
         else:
             return render(request, 'auth/login.html', {'message': 'Invalid Credentials'})

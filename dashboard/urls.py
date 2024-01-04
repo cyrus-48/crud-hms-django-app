@@ -41,5 +41,9 @@ urlpatterns = [
     path('delete-user/<int:user_id>' , views.delete_user , name='delete-user'),
     path('user/',views.user , name='user'),
     path('add-user/',views.add_user , name='add-user'),
+    path('profile/',views.profile , name='profile'),
+    path('logout/',views.logout_view , name='logout'),
+    path('profile-details/',views.profile_details , name='profile-details'),
+    path('edit-profile/',views.edit_profile , name='edit-profile'),
                
 ]

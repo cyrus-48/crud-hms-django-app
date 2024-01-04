@@ -9,6 +9,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.core.serializers import serialize
 from dateutil.parser import parse
+from django.contrib.auth import logout
 
 
 
@@ -574,6 +575,71 @@ def add_user(request):
     else:
         error_message = 'Invalid request'
         return HttpResponseRedirect(reverse('dashboard:user') + f'?error_message={error_message}')
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def profile(request): 
+    try:
+        user = CustomUser.objects.get(id=request.user.id)
+        context = {
+            'user': user,
+        }
+        return render(request, 'dashboard/users/profile.html', context)
+    except CustomUser.DoesNotExist:
+        error_message = 'User does not exist'
+        return HttpResponseRedirect(reverse('dashboard:home') + f'?error_message={error_message}')
+    
+    
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def logout_view(request): 
+    logout(request) 
+    return HttpResponseRedirect(reverse('accounts:login'))
+
+
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def profile_details(request):
+    try:
+        user = CustomUser.objects.get(id=request.user.id)
+        context = {
+            'user': user,
+        }
+        return render(request, 'dashboard/users/profile_detail.html', context)
+    except CustomUser.DoesNotExist:
+        error_message = 'User does not exist'
+        return HttpResponseRedirect(reverse('dashboard:home') + f'?error_message={error_message}')
+    
+@login_required(login_url='accounts:login')
+@staff_member_required(login_url='accounts:login')
+def edit_profile(request):
+    if request.method == 'POST':
+        user_id = request.POST['user_id']
+        try:
+            user = CustomUser.objects.get(id=user_id)
+            user.first_name = request.POST['first_name']
+            user.last_name = request.POST['last_name']
+            user.address = request.POST['address']
+            user.email = request.POST['email']
+            user.gender =  request.POST['gender']
+            if 'new_image' in request.FILES:
+                user.image = request.FILES['new_image']
+            user.save()
+            success_message = 'User details updated successfully'
+            return HttpResponseRedirect(reverse('dashboard:profile-details') + f'?success_message={success_message}')
+        except CustomUser.DoesNotExist:
+            error_message = 'User does not exist'
+            return HttpResponseRedirect(reverse('dashboard:profile-details') + f'?error_message={error_message}')
+        except Exception as e:
+            error_message = 'Error occurred while updating user details'
+            return HttpResponseRedirect(reverse('dashboard:profile-details') + f'?error_message={error_message}')
+    else:
+        error_message = 'Invalid request'
+        return HttpResponseRedirect(reverse('dashboard:profile-details') + f'?error_message={error_message}')
+
+    
     
 
     
