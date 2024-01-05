@@ -109,7 +109,6 @@
 								<li class="nav-item"><a href="" class="nav-link" href="#explore">About</a></li>
 								<li class="nav-item"><a href="" class="nav-link" href="#reviews">Reviews</a></li> 
 								<li class="nav-item"><a href="{% url 'accounts:profile' %}" class="nav-link" href="#contact">My Account</a></li>
-
 								  <!-- Add profile image link with dropdown -->
 								  {% if user.is_authenticated %}
 								  <li class="nav-item ml-auto dropdown">
@@ -138,10 +137,7 @@
 		<!-- top-area End -->
         {% block content%}
 
-         {% endblock content%} 
-		<!-- statistics strat -->
-	
-		<!-- statistics end -->
+         {% endblock content%}  
  		<!--footer start-->
 		<footer id="footer"  class="footer">
 			<div class="container">
@@ -154,12 +150,10 @@
 			           	</div>
 			           	<div class="col-sm-9">
 			           		<ul class="footer-menu-item">
-			                    <li class="scroll"><a href="#works">how it works</a></li>
-			                    <li class="scroll"><a href="#explore">explore</a></li>
-			                    <li class="scroll"><a href="#reviews">review</a></li>
-			                    <li class="scroll"><a href="#blog">blog</a></li>
-			                    <li class="scroll"><a href="#contact">contact</a></li>
-			                    <li class=" scroll"><a href="#contact">my account</a></li>
+			                    <li class="scroll"><a  href="{% url 'hotel:home' %}">home</a></li>
+			                    <li class="scroll"><a href="{% url 'hotel:all_categories' %}">categories</a></li>
+			                    <li class="scroll"><a href="#reviews">about</a></li>
+			                    <li class="scroll"><a href="{% url 'accounts:profile' %}">my account</a></li> 
 			                </ul><!--/.nav -->
 			           	</div>
 		           </div>
