@@ -1,0 +1,61 @@
+ 
+ {% extends 'email/email_base.html' %}
+ {% load static %}
+ {% block title %}Booking Confirmation{% endblock %}
+ <style>
+    /* Custom Styles */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f8f9fa;
+    }
+    .container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin: auto;
+        max-width: 600px;
+        padding: 30px;
+        margin-top: 20px;
+    }
+    .jumbotron {
+        background-color: #007bff;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+    }
+    h1, h2 {
+        color: #007bff;
+    }
+    .lead {
+        color: #495057;
+    }
+    .list-group-item {
+        background-color: #f8f9fa;
+    }
+    .heart-icon {
+        color: #dc3545;
+    }
+</style>
+    {% block content %}
+    <div class="container">
+        <div class="jumbotron mt-3"> 
+            
+            <h1 class="display-4">Booking Confirmation <i class="fas fa-check-circle"></i></h1>
+            <p class="lead">Hello {{ user.get_full_name }},</p>
+            
+            <p>Your booking has been confirmed for the following details:</p>
+            
+            <ul class="list-group">
+                <li class="list-group-item"><i class="fas fa-bed"></i> <strong>Room:</strong> {{ booking.room.name }}</li>
+                <li class="list-group-item"><i class="fas fa-calendar-check"></i> <strong>Check-in:</strong> {{ booking.check_in }}</li>
+                <li class="list-group-item"><i class="fas fa-calendar-times"></i> <strong>Check-out:</strong> {{ booking.check_out }}</li>
+                <li class="list-group-item"><i class="fas fa-users"></i> <strong>Number of Persons:</strong> {{ booking.persons }}</li>
+            </ul>
+
+            <p class="lead mt-3">Thank you for choosing our services!</p> 
+            <!-- Font Awesome Heart Icon -->
+            <p class="mt-4"><i class="fas fa-heart heart-icon"></i> Best regards,<br>Hotel Management Team</p>
+        </div>
+    </div>  
+    {% endblock %}

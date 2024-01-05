@@ -299,6 +299,10 @@ def add_room(request):
         category = request.POST['category']
         status = request.POST['status']
         try:
+            number_of_rooms = Room.objects.filter(category_id=category).count()
+            if number_of_rooms >= RoomCategory.objects.get(id=category).rooms:
+                error_message = 'Maximum number of rooms reached for the selected category'
+                return HttpResponseRedirect(reverse('dashboard:room') + f'?error_message={error_message}')
             room = Room.objects.create(name=name, category_id=category, status=status)
             success_message = 'Room added successfully'
             return HttpResponseRedirect(reverse('dashboard:room-detail', args=(room.id,)) + f'?success_message={success_message}')

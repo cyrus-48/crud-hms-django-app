@@ -7,6 +7,7 @@ from django.views.generic import ListView , DetailView  , CreateView , UpdateVie
 from django.db.models import Sum , Avg
 from django.utils import timezone
 from dateutil.parser import parse
+from .email_service import EmailService
 
 def home(request):     
     room_categories  = RoomCategory.objects.all()[:4]
@@ -49,9 +50,7 @@ def category(request , category_id):
         'possible_rooms_for_category':possible_rooms_for_category,
         
     }
-    return render(request, 'public/category_detail.html' , context)
-
-
+    return render(request, 'public/category_detail.html' , context) 
 def all_categories(request):
     categories = RoomCategory.objects.all()
     categories_count = RoomCategory.objects.all().count()
@@ -65,8 +64,7 @@ def all_categories(request):
         'categories_count':categories_count,
         'reviews_count':reviews_count
     }
-    return render(request, 'public/all_categories.html' , context)
-
+    return render(request, 'public/all_categories.html' , context) 
 @login_required(login_url='accounts:login')
 def booking(request):
     user = request.user 
@@ -114,6 +112,13 @@ def booking(request):
         # update room status
         room.status = 'booked'
         room.save()
+        subject = 'Booking Confirmation'
+        template = 'email/booking_confirmation_email.html'
+        context = {'user': user, 'booking': booking}
+        to = 'stanmusembi8@gmail.com'
+
+        EmailService.send_confirm_email(user, subject, template, to, context)
+
 
         return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)))
 
@@ -138,11 +143,12 @@ def  cancel_booking(request , booking_id):
     if booking.check_in < timezone.now():
         return HttpResponse('You cannot cancel this booking')
     
+  
+    booking.status = 'cancelled'
+    booking.save()
     room = booking.room
     room.status = 'available'
     room.save()
-    booking.status = 'cancelled'
-    booking.save()
     success_message = 'Booking cancelled successfully' 
     return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?success_message={success_message}')
 
