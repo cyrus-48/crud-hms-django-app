@@ -12,6 +12,7 @@
 
                     <div class="signin-form">
                         <h2 class="form-title">Sign in</h2>
+                        {% include 'dashboard/message_include.html' %}
                         <form method="POST" class="register-form" id="login-form" action="{% url 'accounts:login' %}"> 
                             {% csrf_token %}
                             <div class="form-group">

@@ -19,18 +19,33 @@ def register_view(request):
         confirm_password = request.POST.get('confirm_password')
          
         if password != confirm_password:
-            return render(request, 'auth/registration.html', {'message': 'Password Mismatch'})
+            error_message = "Passwords do not much"
+            return  HttpResponseRedirect(reverse('accounts:register')+f'?error_message={error_message}')
         
-        #USER CREATION
-        user = CustomUser.objects.create_user(email=email, password=password)
-        user.first_name = fname
-        user.last_name = lname
-        user.gender = gender
-        user.image = image
-        user.address = address
-        user.save()
         
-        login(request, user)
+         # Check if the email is already in use
+        if CustomUser.objects.filter(email=email).exists():
+            error_message = "Email is already in use" 
+            return HttpResponseRedirect(reverse('accounts:register')+f'?error_message={error_message}')
+
+        
+        # USER CREATION
+        try:
+            user = CustomUser.objects.create_user(email=email, password=password)
+            user.first_name = fname
+            user.last_name = lname
+            user.gender = gender
+            user.image = image
+            user.address = address
+            user.save() 
+            # Log in the user
+            login(request, user) 
+            return HttpResponseRedirect(reverse('hotel:home'))
+
+        except Exception as e: 
+            error_message = f"An error occurred during registration: {str(e)}" 
+            return HttpResponseRedirect(reverse('accounts:register')+f'?error_message={error_message}')
+
         return HttpResponseRedirect(reverse('accounts:login'))
     return render(request, 'auth/registration.html') 
         
@@ -39,8 +54,7 @@ def register_view(request):
 def login_view(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        password = request.POST.get('password')
-        print(email,password)
+        password = request.POST.get('password') 
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
@@ -48,7 +62,8 @@ def login_view(request):
                 return HttpResponseRedirect(reverse('dashboard:dashboard-index'))
             return HttpResponseRedirect(reverse('hotel:home'))
         else:
-            return render(request, 'auth/login.html', {'message': 'Invalid Credentials'})
+            error_message= "invalid credentials"
+            return  HttpResponseRedirect(reverse('accounts:login')+f'?error_message={error_message}')
     return render(request, 'auth/login.html')
 
 @login_required(login_url='accounts:login')

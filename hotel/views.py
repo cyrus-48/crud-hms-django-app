@@ -30,6 +30,14 @@ def home(request):
     return render(request, 'public/index.html' , context)
 
 
+def about(request):
+    hotel  =  Hotel.objects.get(id=1)
+    context = {
+        "hotel":hotel
+    }
+    return render(request , 'public/about.html' , context)
+
+
 def category(request , category_id):
     category = RoomCategory.objects.get(id=category_id)
     description = category.description.split(',')

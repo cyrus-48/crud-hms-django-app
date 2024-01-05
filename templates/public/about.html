@@ -1,0 +1,74 @@
+{% extends 'public/base.html' %}
+{% load static%}
+
+{% block title %}About Us{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'assets/auth/images/logo.png' %}" alt="About Us" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-4">Our Story</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Vestibulum tincidunt, est ut rhoncus feugiat, nulla metus congue metus, ac ultricies nibh mauris vel tortor.</p>
+                <p>Praesent non feugiat odio. Aliquam erat volutpat. Suspendisse in dui eu libero aliquet consectetur ac id turpis. Fusce eu consequat velit. Nullam vel libero non mauris semper convallis.</p>
+                <p>Our commitment is to provide exceptional service and create unforgettable experiences for our guests.</p>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <h2 class="mb-4">Our Staff</h2>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'images/team_member1.jpg' %}" alt="Team Member 1" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">John Doe</h5>
+                        <p class="card-text">Co-Founder</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'images/team_member2.jpg' %}" alt="Team Member 2" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Jane Smith</h5>
+                        <p class="card-text">Marketing Manager</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img src="{% static 'images/team_member3.jpg' %}" alt="Team Member 3" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Robert Johnson</h5>
+                        <p class="card-text">Head Chef</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h2 class="mb-4">Hotel Details</h2>
+                <p>Located in the heart of the city, our hotel offers luxurious accommodations with modern amenities. Enjoy a comfortable stay with us and explore the vibrant surroundings.</p>
+                <ul>
+                    <li>Free Wi-Fi</li>
+                    <li>24/7 Room Service</li>
+                    <li>Fitness Center</li>
+                    <li>Restaurant and Bar</li>
+                    <li>Conference Facilities</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-4">Contact Information</h2>
+                <p><strong>Address:</strong> {{hotel.address}}</p>
+                <p><strong>Email:</strong> {{hotel.email}}</p>
+                <p><strong>Phone:</strong> {{hotel.phone}}</p> 
+                
+            </div>
+        </div>
+    </div>
+{% endblock %}

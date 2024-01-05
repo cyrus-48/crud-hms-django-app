@@ -106,8 +106,8 @@
 							<ul class="navbar-nav ms-auto" data-bs-in="fadeInDown" data-bs-out="fadeOutUp">
 								<li class="nav-item"><a href="{% url 'hotel:home' %}" class="nav-link active" href="#home">Home</a></li>
 								<li class="nav-item"><a href="{% url 'hotel:all_categories' %}" class="nav-link" href="#works">Categories </a></li>
-								<li class="nav-item"><a href="" class="nav-link" href="#explore">About</a></li>
-								<li class="nav-item"><a href="" class="nav-link" href="#reviews">Reviews</a></li> 
+								<li class="nav-item"><a href="{% url 'hotel:about' %}" class="nav-link"  >About</a></li>
+								<li class="nav-item"><a href="{% url 'hotel:reviews' %}" class="nav-link" href="#reviews">Reviews</a></li> 
 								<li class="nav-item"><a href="{% url 'accounts:profile' %}" class="nav-link" href="#contact">My Account</a></li>
 								  <!-- Add profile image link with dropdown -->
 								  {% if user.is_authenticated %}
@@ -152,7 +152,8 @@
 			           		<ul class="footer-menu-item">
 			                    <li class="scroll"><a  href="{% url 'hotel:home' %}">home</a></li>
 			                    <li class="scroll"><a href="{% url 'hotel:all_categories' %}">categories</a></li>
-			                    <li class="scroll"><a href="#reviews">about</a></li>
+			                    <li class="scroll"><a href="{% url 'hotel:reviews' %}">review</a></li>
+								<li class="scroll"><a href="{% url 'hotel:about' %}">about</a></li>
 			                    <li class="scroll"><a href="{% url 'accounts:profile' %}">my account</a></li> 
 			                </ul><!--/.nav -->
 			           	</div>
@@ -177,13 +178,11 @@
 					</div>
 					
 				</div><!--/.hm-footer-copyright-->
-			</div><!--/.container-->
-
+			</div><!--/.container--> 
 			<div id="scroll-Top">
 				<div class="return-to-top">
 					<i class="fa fa-angle-up " id="scroll-top" data-toggle="tooltip" data-placement="top" title="" data-original-title="Back to Top" aria-hidden="true"></i>
-				</div>
-				
+				</div> 
 			</div><!--/.scroll-Top-->
 			
         </footer><!--/.footer-->
@@ -204,9 +203,7 @@
 		<script src="{% static 'assets/js/jquery.js' %}"></script>
         
         <!--modernizr.min.js-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-		
- 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script> 
         <!--feather.min.js-->
         <script  src="{% static 'assets/js/feather.min.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>

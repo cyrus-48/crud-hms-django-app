@@ -7,6 +7,7 @@
                 <div class="signup-content">
                     <div class="signup-form">
                         <h2 class="form-title">Sign up</h2>
+                        {% include 'dashboard/message_include.html' %}
                         <form method="POST" class="register-form" id="register-form" action="{% url 'accounts:register' %}">
                              {% csrf_token %}
                             <div class="form-group">

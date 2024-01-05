@@ -12,5 +12,6 @@ urlpatterns = [
     path('payment/', payment, name='payment'),
     path('process-payment/', sendMoney, name='process-payment'),
     path('reviews', reviews ,name='reviews'),
-    path('review-detail/<int:id>' , review_details , name="review-detail")
+    path('review-detail/<int:id>' , review_details , name="review-detail"),
+    path('about/',about , name="about")
 ]
