@@ -1,0 +1,34 @@
+{% extends 'public/base.html' %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Reviews</h2>
+
+        {% if category %}
+            <div class="mb-3">
+                <h4>Category: {{ category.name }}</h4>
+                <p>Number of Reviews: {{ category.total_reviews }}</p>
+                <p>Average Rating: {{ category.average_rating }}</p>
+            </div>
+        {% endif %}
+        {% if reviews %}
+            <div class="row">
+                {% for review in reviews %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ review.user.get_full_name }}</h5>
+                                <p class="card-text">{{ review.comment }}</p>
+                                <p class="card-text">Rating: {{ review.rating }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No reviews available for this category.</p>
+        {% endif %}
+    </div>
+{% endblock %}

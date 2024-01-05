@@ -172,8 +172,34 @@ def  cancel_booking(request , booking_id):
     success_message = 'Booking cancelled successfully' 
     return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?success_message={success_message}')
 
-# payment views 
+#reviews 
+def reviews(request):
+    all_categories  = RoomCategory.objects.all()
+    context ={
+        "categories":all_categories
+    }
+    return  render(request , 'public/reviews.html' , context)
 
+def review_details(request , id):
+    try:
+        category = RoomCategory.objects.get(id=id) 
+        reviews =  Review.objects.filter(category=id)
+        context = {
+            "category":category,
+            "reviews": reviews
+            
+        }
+        return render(request , 'public/review_details.html' , context)
+        
+        
+    except:
+        error_message = "Category does not exists"
+        return HttpResponseRedirect(reverse("hotel:reviews")+f'?error_message={error_message}')
+            
+    
+    
+
+# payment views  
 @login_required(login_url='accounts:login')
 def payment(request):
     return render(request, 'public/payment_page.html')

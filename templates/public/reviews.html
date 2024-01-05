@@ -1,0 +1,25 @@
+{% extends 'public/base.html' %}
+{% block title %}Reviews{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4">Reviews</h2> 
+        {% if categories %}
+            <div class="row">
+                {% for category in categories %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ category.name }}</h5>
+                                <p class="card-text">Number of Reviews: {{ category.total_reviews }}</p>
+                                <p class="card-text">Average Rating: {{ category.average_rating }}</p>
+                                <a href="{% url 'hotel:review-detail' category.id %}" class="btn btn-primary">View Reviews</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No categories available.</p>
+        {% endif %}
+    </div>
+{% endblock %}

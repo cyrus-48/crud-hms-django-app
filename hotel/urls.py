@@ -11,4 +11,6 @@ urlpatterns = [
     path('cancel_booking/<int:booking_id>/', cancel_booking, name='cancel_booking'),
     path('payment/', payment, name='payment'),
     path('process-payment/', sendMoney, name='process-payment'),
+    path('reviews', reviews ,name='reviews'),
+    path('review-detail/<int:id>' , review_details , name="review-detail")
 ]
