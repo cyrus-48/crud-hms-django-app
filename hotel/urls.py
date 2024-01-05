@@ -9,4 +9,6 @@ urlpatterns = [
      path('book/',booking , name='book'),
      path('checkout/<int:booking_id>/', checkout, name='checkout'),
     path('cancel_booking/<int:booking_id>/', cancel_booking, name='cancel_booking'),
+    path('payment/', payment, name='payment'),
+    path('process-payment/', sendMoney, name='process-payment'),
 ]

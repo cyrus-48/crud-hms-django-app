@@ -50,11 +50,12 @@
                     <div class="col-sm-12 col-md-6">
                         <div class="single-explore-item"> 
                             <div class="single-explore-txt bg-theme-1">
+                                {% include 'dashboard/message_include.html' %}
                                 <h2><a href="#">Book {{category.name }} Suite Room</a></h2> 
                                 <div class="explore-person">
                                      <!-- Booking Form -->
 									{%  if available_rooms > 0%}
-									<form method="post" action="{% url 'hotel:book' %}">
+									<form method="post" action="{% url 'hotel:book' %}"  onsubmit="showLoadingSpinner()"">
 										{% csrf_token %}
                                         {% load custom_filters %}
                                         {% if request.GET.error_message %}
@@ -82,8 +83,19 @@
 											<label for="guests" class="form-label">Number of Persons</label>
 											<input type="number" class="form-control" id="guests" name="persons" required>
 										</div>
-										<button type="submit" class="btn btn-custom">Book Now</button>
+										<button type="submit" class="btn btn-custom" id="bookNowBtn">
+                                            <span id="spinner" class="spinner-border spinner-border-sm d-none text-primary" role="status" aria-hidden="true"></span>
+                                            Book Now
+                                        </button>
 									</form>
+                                    <script>
+                                        function showLoadingSpinner() {
+                                            // Show the loading spinner
+                                            document.getElementById('spinner').classList.remove('d-none');
+                                            // Disable the button to prevent multiple submissions
+                                            document.getElementById('bookNowBtn').disabled = true;
+                                        }
+                                    </script>
 									{% else %}
 										<p class="text-danger">No rooms available ,  Check later or choose other <a href="{% url 'hotel:all_categories' %}">  Categories</a></p>
 									{% endif %}

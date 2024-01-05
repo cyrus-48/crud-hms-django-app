@@ -47,16 +47,40 @@
                                 </div>
                             </div>
                         </div> 
+                        
                         <div class="row">
-                            <div class=" col-sm-6 col-md-6"> 
-                                   <button  class="btn btn-custom"> <a href="{% url 'hotel:checkout' booking.id %}">Check Out</a></buttoon>
-                               
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <i class="fas fa-dollar-sign text-primary"></i>
+                                    <strong class="text-primary"> Ksh : Total Cost:</strong> {{ booking.total_cost }}
+                                </div>
+                            </div> 
+                        </div> 
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6"> 
+                                <button class="btn btn-custom" onclick="showLoadingSpinner('checkOut')">
+                                    <span id="checkOutSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    <a href="{% url 'hotel:checkout' booking.id %}">Check Out</a>
+                                </button>
                             </div>
-                            <div class="  col-sm-6 col-md-6"> 
-                             <button  class="btn btn-danger"> <a href="{% url 'hotel:cancel_booking' booking.id %}">Cancel Booking</a></button>
-                               
+                            <div class="col-sm-6 col-md-6"> 
+                                <button class="btn btn-danger" onclick="showLoadingSpinner('cancelBooking')">
+                                    <span id="cancelBookingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                    <a href="{% url 'hotel:cancel_booking' booking.id %}">Cancel Booking</a>
+                                </button>
                             </div>
                         </div>
+                        
+                        <script>
+                            function showLoadingSpinner(action) {
+                                // Show the loading spinner
+                                document.getElementById(action + 'Spinner').classList.remove('d-none');
+                                // Disable the button to prevent multiple submissions
+                                document.getElementById(action + 'Spinner').setAttribute('disabled', 'disabled');
+                            }
+                        </script>
+                        
+                        
                             <!-- Reviews Section -->
                             <h3 class="card-title mt-4">
                                 <i class="bi bi-star text-success"></i>Recent Reviews

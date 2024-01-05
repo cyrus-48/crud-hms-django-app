@@ -8,6 +8,8 @@ from django.db.models import Sum , Avg
 from django.utils import timezone
 from dateutil.parser import parse
 from .email_service import EmailService
+import requests 
+from .mpesa_credentials import MpesaAccessToken, LipanaMpesaPassword, MpesaC2bCredential
 
 def home(request):     
     room_categories  = RoomCategory.objects.all()[:4]
@@ -107,6 +109,7 @@ def booking(request):
             check_out=check_out,
             persons=persons
         )
+        booking.status = "active"
         booking.save()
 
         # update room status
@@ -115,12 +118,13 @@ def booking(request):
         subject = 'Booking Confirmation'
         template = 'email/booking_confirmation_email.html'
         context = {'user': user, 'booking': booking}
-        to = 'stanmusembi8@gmail.com'
+        to = 'cyrusmwendwa370@gmail.com'
+        
 
         EmailService.send_confirm_email(user, subject, template, to, context)
+        success_message = 'Booking created successfully'
 
-
-        return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)))
+        return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,) ) + f'?success_message={success_message}')
 
     else:
         return HttpResponse('Invalid request')
@@ -130,27 +134,98 @@ def booking(request):
 def  checkout(request , booking_id):
     booking = Booking.objects.get(id=booking_id)
     booking.check_out = timezone.now()
-    booking.status = 'checked out'  
-    booking.save()
+    user = request.user
     room = booking.room
     room.status = 'available'
+    booking.status = 'checked out'  
+    booking.save()
     room.save()
-    return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)))
+    subject = 'Check Out Confirmation'
+    template = 'email/checkout_confirmation_email.html'
+    context = {'user': user, 'booking': booking}
+    to = 'cyrusmwendwa370@gmail.com'
 
+    EmailService.send_confirm_email(user, subject, template, to, context)
+    success_message = 'Checked out successfully'
+    
+    return HttpResponseRedirect(reverse('accounts:my_bookings' )+ f'?success_message={success_message}') 
 @login_required(login_url='accounts:login')
 def  cancel_booking(request , booking_id):
     booking = Booking.objects.get(id=booking_id)
+    user = request.user
     if booking.check_in < timezone.now():
-        return HttpResponse('You cannot cancel this booking')
+         error_message = 'You cannot cancel a booking that has already started, please check out instead'
+         return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?error_message={error_message}')
     
-  
-    booking.status = 'cancelled'
-    booking.save()
     room = booking.room
     room.status = 'available'
     room.save()
+    booking.status = 'cancelled'
+    booking.save() 
+    subject = 'Check Out Confirmation'
+    template = 'email/cancellation_confirmation_email.html'
+    context = {'user': user, 'booking': booking}
+    to = 'cyrusmwendwa370@gmail.com'
+
+    EmailService.send_confirm_email(user, subject, template, to, context)
+    
     success_message = 'Booking cancelled successfully' 
     return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?success_message={success_message}')
+
+# payment views 
+
+@login_required(login_url='accounts:login')
+def payment(request):
+    return render(request, 'public/payment_page.html')
+
+
+
+@login_required(login_url='accounts:login')
+def sendMoney(request):
+    amount = 1
+
+    if request.method == "POST":
+        phone = request.POST.get('phone')
+
+        if phone == '':
+            messages.error(request,
+                           "Invalid phone number. Enter a valid Safaricom number starting with 254 (e.g., 2547xxxxxxxx).")
+        else:
+            access_token = MpesaAccessToken.validated_mpesa_access_token
+            api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
+            headers = {"Authorization": "Bearer %s" % access_token}
+
+            payload = {
+                "BusinessShortCode": LipanaMpesaPassword.Business_short_code,
+                "Password": LipanaMpesaPassword.decode_password,
+                "Timestamp": LipanaMpesaPassword.lipa_time,
+                "TransactionType": "CustomerPayBillOnline",
+                "Amount": amount,
+                "PartyA": phone,
+                "PartyB": LipanaMpesaPassword.Business_short_code,
+                "PhoneNumber": phone,
+                "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
+                "AccountReference": "mwendwa",
+                "TransactionDesc": "test",
+            }
+
+            response = requests.post(api_url, json=payload, headers=headers)
+
+            mpesa_response = response.json()
+            print(mpesa_response)
+
+            if mpesa_response['ResponseCode'] == '0':
+                mpesa_transactions = MpesaTransactions.objects.create(
+                    phone_number=phone, amount=amount, description='test',
+                    reference=mpesa_response['CheckoutRequestID'])
+                mpesa_transactions.save()
+
+            return redirect('hotel:payment')
+
+    # If it's not a POST request, return the form template with the initial context
+    context = {'amount': amount}
+    return render(request, 'public/payment_page.html', context)
+
 
 
 

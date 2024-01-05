@@ -1,0 +1,21 @@
+{% extends 'public/base.html' %}
+{% load static %}
+
+{% block title %}M-Pesa Payment{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4">M-Pesa Payment</h2>
+    
+    <form method="post" action="{% url 'hotel:process-payment' %}">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label for="phone_number" class="form-label">Phone Number:</label>
+        <input type="tel" class="form-control" id="phone_number" name="phone" placeholder="Enter your phone number" required>
+      </div> 
+      
+      <button type="submit" class="btn btn-primary">Pay with M-Pesa</button>
+    </form>
+  </div>
+{% endblock %}
