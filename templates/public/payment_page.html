@@ -6,7 +6,7 @@
 {% block content %}
   <div class="container mt-5">
     <h2 class="mb-4">M-Pesa Payment</h2>
-    
+    {% include 'dashboard/message_include.html' %}
     <form method="post" action="{% url 'hotel:process-payment' %}">
       {% csrf_token %}
       

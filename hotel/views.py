@@ -8,8 +8,15 @@ from django.db.models import Sum , Avg
 from django.utils import timezone
 from dateutil.parser import parse
 from .email_service import EmailService
+from requests.auth import HTTPBasicAuth
+from django_daraja.mpesa.core import MpesaClient
 import requests 
 from .mpesa_credentials import MpesaAccessToken, LipanaMpesaPassword, MpesaC2bCredential
+import os
+import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def home(request):     
     room_categories  = RoomCategory.objects.all()[:4]
@@ -212,55 +219,34 @@ def review_details(request , id):
 def payment(request):
     return render(request, 'public/payment_page.html')
 
-
+def get_token():
+    consumer_key = str(os.getenv('CONSUMER_KEY'))
+    consumer_secret = str(os.getenv('CONSUMER_SECRET'))
+    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    r = requests.get(api_URL,
+                     auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    access_token = json.loads(r.text)
+    return access_token['access_token']
+ 
 
 @login_required(login_url='accounts:login')
 def sendMoney(request):
-    amount = 1
-
-    if request.method == "POST":
-        phone = request.POST.get('phone')
-
-        if phone == '':
-            messages.error(request,
-                           "Invalid phone number. Enter a valid Safaricom number starting with 254 (e.g., 2547xxxxxxxx).")
-        else:
-            access_token = MpesaAccessToken.validated_mpesa_access_token
-            api_url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-            headers = {"Authorization": "Bearer %s" % access_token}
-
-            payload = {
-                "BusinessShortCode": LipanaMpesaPassword.Business_short_code,
-                "Password": LipanaMpesaPassword.decode_password,
-                "Timestamp": LipanaMpesaPassword.lipa_time,
-                "TransactionType": "CustomerPayBillOnline",
-                "Amount": amount,
-                "PartyA": phone,
-                "PartyB": LipanaMpesaPassword.Business_short_code,
-                "PhoneNumber": phone,
-                "CallBackURL": "https://sandbox.safaricom.co.ke/mpesa/",
-                "AccountReference": "mwendwa",
-                "TransactionDesc": "test",
-            }
-
-            response = requests.post(api_url, json=payload, headers=headers)
-
-            mpesa_response = response.json()
-            print(mpesa_response)
-
-            if mpesa_response['ResponseCode'] == '0':
-                mpesa_transactions = MpesaTransactions.objects.create(
-                    phone_number=phone, amount=amount, description='test',
-                    reference=mpesa_response['CheckoutRequestID'])
-                mpesa_transactions.save()
-
-            return redirect('hotel:payment')
-
-    # If it's not a POST request, return the form template with the initial context
-    context = {'amount': amount}
-    return render(request, 'public/payment_page.html', context)
-
-
+     client  = MpesaClient()
+     if request.method == 'POST':
+        phone = request.POST['phone']
+        
+        phone_num = '254115645217'
+        amount = 1
+        account_reference = 'HMS'
+        transaction_desc = 'Testing'
+        callback_url = 'https://darajambili.herokuapp.com/express-payment'
+        response = client.stk_push(phone_num, amount, account_reference, transaction_desc, callback_url)
+        
+        success_message =f'response : {response}'
+        return HttpResponseRedirect(reverse('hotel:payment')+f'?success_message={success_message}')
+    
+     return render(request, 'public/payment_page.html')
+ 
 
 
 

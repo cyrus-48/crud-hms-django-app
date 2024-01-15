@@ -17,8 +17,7 @@ class MpesaC2bCredential:
 class MpesaAccessToken:
     r = requests.get(MpesaC2bCredential.api_URL,
                      auth=HTTPBasicAuth(MpesaC2bCredential.consumer_key, MpesaC2bCredential.consumer_secret))
-    mpesa_access_token = json.loads(r.text)
-    validated_mpesa_access_token = mpesa_access_token['access_token']
+     
 
 
 class LipanaMpesaPassword:
@@ -29,3 +28,17 @@ class LipanaMpesaPassword:
     data_to_encode = Business_short_code + passkey + lipa_time
     online_password = base64.b64encode(data_to_encode.encode())
     decode_password = online_password.decode('utf-8')
+    
+
+def get_token():
+    consumer_key = str(os.getenv('CONSUMER_KEY'))
+    consumer_secret = str(os.getenv('CONSUMER_SECRET'))
+    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    r = requests.get(api_URL,
+                     auth=HTTPBasicAuth(consumer_key, consumer_secret))
+    access_token = json.loads(r.text)
+    return access_token['access_token']
+    
+
+if __name__ == "__main__":
+    print(get_token())
