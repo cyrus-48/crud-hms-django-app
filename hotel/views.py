@@ -241,7 +241,7 @@ def sendMoney(request):
         transaction_desc = 'Testing'
         callback_url = 'https://darajambili.herokuapp.com/express-payment'
         response = client.stk_push(phone_num, amount, account_reference, transaction_desc, callback_url)
-        
+        print(response.json())
         success_message =f'response : {response}'
         return HttpResponseRedirect(reverse('hotel:payment')+f'?success_message={success_message}')
     

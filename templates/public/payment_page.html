@@ -9,7 +9,6 @@
     {% include 'dashboard/message_include.html' %}
     <form method="post" action="{% url 'hotel:process-payment' %}">
       {% csrf_token %}
-      
       <div class="mb-3">
         <label for="phone_number" class="form-label">Phone Number:</label>
         <input type="tel" class="form-control" id="phone_number" name="phone" placeholder="Enter your phone number" required>
