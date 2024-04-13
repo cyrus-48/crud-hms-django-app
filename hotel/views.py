@@ -1,20 +1,18 @@
-from django.shortcuts import render
-from django.http import HttpResponse , HttpResponseRedirect
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from .models import * 
-from django.views.generic import ListView , DetailView  , CreateView , UpdateView , DeleteView
-from django.db.models import Sum , Avg
-from django.utils import timezone
-from dateutil.parser import parse
-from .email_service import EmailService
-from requests.auth import HTTPBasicAuth
-from django_daraja.mpesa.core import MpesaClient
-import requests 
-from .mpesa_credentials import MpesaAccessToken, LipanaMpesaPassword, MpesaC2bCredential
-import os
 import json
+import os
+import requests
+from dateutil.parser import parse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
+from django.utils import timezone
+from django_daraja.mpesa.core import MpesaClient
 from dotenv import load_dotenv
+from requests.auth import HTTPBasicAuth
+
+from .email_service import EmailService
+from .models import *
 
 load_dotenv()
 
@@ -233,7 +231,7 @@ def get_token():
 def sendMoney(request):
      client  = MpesaClient()
      if request.method == 'POST':
-        phone = request.POST['phone']
+        request.POST['phone']
         
         phone_num = '254115645217'
         amount = 1
@@ -242,7 +240,7 @@ def sendMoney(request):
         callback_url = 'https://darajambili.herokuapp.com/express-payment'
         response = client.stk_push(phone_num, amount, account_reference, transaction_desc, callback_url)
         print(response.json())
-        success_message =f'response : {response}'
+        success_message =f'response : {response.json()}'
         return HttpResponseRedirect(reverse('hotel:payment')+f'?success_message={success_message}')
     
      return render(request, 'public/payment_page.html')

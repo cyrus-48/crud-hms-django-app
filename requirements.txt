@@ -16,3 +16,5 @@ sqlparse==0.4.4
 tqdm==4.65.0
 urllib3==1.26.18
 y2mate-api==1.0.2
+
+python-dotenv~=1.0.0
