@@ -93,8 +93,6 @@ def booking(request):
 
         if room.status != 'available':
             return HttpResponse('Room is not available')
-        print(f"Check-in: {check_in}, Check-out: {check_out}")
-        print(f"Existing Bookings: {Booking.objects.filter(room=room)}")
  
         # Check for overlapping bookings
         overlapping_bookings = Booking.objects.filter(
@@ -104,7 +102,7 @@ def booking(request):
         ).exists()
 
         if overlapping_bookings:
-            error_message = 'you already have a booking  in the given time period'
+            error_message = 'You cannot make this booking because you already have an active booking'
             return HttpResponseRedirect(reverse('hotel:category', args=(room.category.id,)) + f'?error_message={error_message}')
 
 
@@ -167,7 +165,7 @@ def  cancel_booking(request , booking_id):
     booking = Booking.objects.get(id=booking_id)
     user = request.user
     if booking.check_in < timezone.now():
-         error_message = 'You cannot cancel a booking that has already started, please check out instead'
+         error_message = 'You cannot cancel a booking that has already active, please check out instead'
          return HttpResponseRedirect(reverse('accounts:my_bookings' ) + f'?error_message={error_message}')
     
     room = booking.room
